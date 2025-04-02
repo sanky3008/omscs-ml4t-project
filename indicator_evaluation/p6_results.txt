@@ -1,0 +1,15 @@
+Theoretically Optimal Strategy Stats:
+
+Sharpe Ratio of TOS: 11.240498250309987
+Sharpe Ratio of Benchmark : 1.4094336593795764
+
+Cumulative Return of TOS: 19.5019
+Cumulative Return of Benchmark : 1.9017
+
+Standard Deviation of TOS: 0.008539127542650616
+Standard Deviation of Benchmark : 0.028329263065245084
+
+Average Daily Return of TOS: 0.0060464266993481616
+Average Daily Return of Benchmark : 0.0025152412437376083
+
+Final Portfolio Value: 2050190.0

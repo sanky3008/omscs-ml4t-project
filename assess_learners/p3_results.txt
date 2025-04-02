@@ -1,0 +1,1407 @@
+train_x: (215, 8)train_y: (215,)test_x: (215, 8)test_y: (215,)
+EXPERIMENT 1 & 2:
+
+
+
+LEAF SIZE 1:
+
+In sample testing for leaf size 1:
+RMSE DTLearner: 0.0
+RMSE BagLearner: 0.0021832908698859567
+Corr DTLearner: 1.0
+Corr BagLearner: 0.9809324060272476
+
+Out sample testing for leaf size 1:
+RMSE DTLearner: 0.007759542895306197
+RMSE BagLearner: 0.005870746063162627
+Corr DTLearner: 0.7198995606130053
+Corr BagLearner: 0.8509370874401201
+
+
+LEAF SIZE 2:
+
+In sample testing for leaf size 2:
+RMSE DTLearner: 0.0022960294565035006
+RMSE BagLearner: 0.002477307223594565
+Corr DTLearner: 0.9747450249712547
+Corr BagLearner: 0.9743713673013784
+
+Out sample testing for leaf size 2:
+RMSE DTLearner: 0.007395586271982134
+RMSE BagLearner: 0.005989792904992667
+Corr DTLearner: 0.7416266902974354
+Corr BagLearner: 0.8378252563495534
+
+
+LEAF SIZE 3:
+
+In sample testing for leaf size 3:
+RMSE DTLearner: 0.0033663259699283883
+RMSE BagLearner: 0.002864349109970631
+Corr DTLearner: 0.9450467160840194
+Corr BagLearner: 0.9662487146958045
+
+Out sample testing for leaf size 3:
+RMSE DTLearner: 0.007161844311477721
+RMSE BagLearner: 0.006150156343955553
+Corr DTLearner: 0.7513669461068349
+Corr BagLearner: 0.8299954606825078
+
+
+LEAF SIZE 4:
+
+In sample testing for leaf size 4:
+RMSE DTLearner: 0.003431893271411287
+RMSE BagLearner: 0.0030850996659468714
+Corr DTLearner: 0.9428338121299337
+Corr BagLearner: 0.9574696052158089
+
+Out sample testing for leaf size 4:
+RMSE DTLearner: 0.0071074208446260485
+RMSE BagLearner: 0.005976070728253293
+Corr DTLearner: 0.7551545913643298
+Corr BagLearner: 0.8409769975620822
+
+
+LEAF SIZE 5:
+
+In sample testing for leaf size 5:
+RMSE DTLearner: 0.004594245005050342
+RMSE BagLearner: 0.003557881090430286
+Corr DTLearner: 0.8949043148201551
+Corr BagLearner: 0.946602342512864
+
+Out sample testing for leaf size 5:
+RMSE DTLearner: 0.007050574524681984
+RMSE BagLearner: 0.006137262362672987
+Corr DTLearner: 0.7631744706351998
+Corr BagLearner: 0.838198754631215
+
+
+LEAF SIZE 6:
+
+In sample testing for leaf size 6:
+RMSE DTLearner: 0.00489720427847409
+RMSE BagLearner: 0.003812145333240278
+Corr DTLearner: 0.8797396535645478
+Corr BagLearner: 0.9393987377571937
+
+Out sample testing for leaf size 6:
+RMSE DTLearner: 0.0068611831093105535
+RMSE BagLearner: 0.006108124908745894
+Corr DTLearner: 0.7768450485483605
+Corr BagLearner: 0.8396139030159772
+
+
+LEAF SIZE 7:
+
+In sample testing for leaf size 7:
+RMSE DTLearner: 0.00489720427847409
+RMSE BagLearner: 0.0038727449981901317
+Corr DTLearner: 0.8797396535645478
+Corr BagLearner: 0.930510137870239
+
+Out sample testing for leaf size 7:
+RMSE DTLearner: 0.0068611831093105535
+RMSE BagLearner: 0.00581584746145004
+Corr DTLearner: 0.7768450485483605
+Corr BagLearner: 0.8523228625770791
+
+
+LEAF SIZE 8:
+
+In sample testing for leaf size 8:
+RMSE DTLearner: 0.00489720427847409
+RMSE BagLearner: 0.00393007069229401
+Corr DTLearner: 0.8797396535645478
+Corr BagLearner: 0.9323219949175645
+
+Out sample testing for leaf size 8:
+RMSE DTLearner: 0.0068611831093105535
+RMSE BagLearner: 0.0059906885949899845
+Corr DTLearner: 0.7768450485483605
+Corr BagLearner: 0.8466541634215882
+
+
+LEAF SIZE 9:
+
+In sample testing for leaf size 9:
+RMSE DTLearner: 0.0049228113519903475
+RMSE BagLearner: 0.003975920070074058
+Corr DTLearner: 0.8784409090500646
+Corr BagLearner: 0.9283417019228148
+
+Out sample testing for leaf size 9:
+RMSE DTLearner: 0.006902415207992013
+RMSE BagLearner: 0.00614136317180963
+Corr DTLearner: 0.773197900433014
+Corr BagLearner: 0.8357089693938611
+
+
+LEAF SIZE 10:
+
+In sample testing for leaf size 10:
+RMSE DTLearner: 0.005449158938217892
+RMSE BagLearner: 0.0041686236677504545
+Corr DTLearner: 0.8495676461619436
+Corr BagLearner: 0.9206977011425442
+
+Out sample testing for leaf size 10:
+RMSE DTLearner: 0.006999510430332196
+RMSE BagLearner: 0.006053739213128012
+Corr DTLearner: 0.7661019382465403
+Corr BagLearner: 0.8446928457063783
+
+
+LEAF SIZE 11:
+
+In sample testing for leaf size 11:
+RMSE DTLearner: 0.005474926538938898
+RMSE BagLearner: 0.004459251276558127
+Corr DTLearner: 0.8465017511089079
+Corr BagLearner: 0.9092961094118668
+
+Out sample testing for leaf size 11:
+RMSE DTLearner: 0.006963705339879846
+RMSE BagLearner: 0.006202954387137789
+Corr DTLearner: 0.7673600047262129
+Corr BagLearner: 0.8343639764262298
+
+
+LEAF SIZE 12:
+
+In sample testing for leaf size 12:
+RMSE DTLearner: 0.005474926538938898
+RMSE BagLearner: 0.004510271294768506
+Corr DTLearner: 0.8465017511089079
+Corr BagLearner: 0.9084259753771924
+
+Out sample testing for leaf size 12:
+RMSE DTLearner: 0.006963705339879846
+RMSE BagLearner: 0.006141077880852954
+Corr DTLearner: 0.7673600047262129
+Corr BagLearner: 0.8420464130215176
+
+
+LEAF SIZE 13:
+
+In sample testing for leaf size 13:
+RMSE DTLearner: 0.005474926538938898
+RMSE BagLearner: 0.004658534657608617
+Corr DTLearner: 0.8465017511089079
+Corr BagLearner: 0.8997322573996662
+
+Out sample testing for leaf size 13:
+RMSE DTLearner: 0.006963705339879846
+RMSE BagLearner: 0.006270184580863257
+Corr DTLearner: 0.7673600047262129
+Corr BagLearner: 0.8289183475599011
+
+
+LEAF SIZE 14:
+
+In sample testing for leaf size 14:
+RMSE DTLearner: 0.005474926538938898
+RMSE BagLearner: 0.004580167177415788
+Corr DTLearner: 0.8465017511089079
+Corr BagLearner: 0.9018509111515444
+
+Out sample testing for leaf size 14:
+RMSE DTLearner: 0.006963705339879846
+RMSE BagLearner: 0.006146137417626795
+Corr DTLearner: 0.7673600047262129
+Corr BagLearner: 0.8342558630399074
+
+
+LEAF SIZE 15:
+
+In sample testing for leaf size 15:
+RMSE DTLearner: 0.005474926538938898
+RMSE BagLearner: 0.004771741218539168
+Corr DTLearner: 0.8465017511089079
+Corr BagLearner: 0.8936186793641355
+
+Out sample testing for leaf size 15:
+RMSE DTLearner: 0.006963705339879846
+RMSE BagLearner: 0.006170250725947632
+Corr DTLearner: 0.7673600047262129
+Corr BagLearner: 0.8355058358854471
+
+
+LEAF SIZE 16:
+
+In sample testing for leaf size 16:
+RMSE DTLearner: 0.005474926538938898
+RMSE BagLearner: 0.004632148415424976
+Corr DTLearner: 0.8465017511089079
+Corr BagLearner: 0.9010906455086485
+
+Out sample testing for leaf size 16:
+RMSE DTLearner: 0.006963705339879846
+RMSE BagLearner: 0.006007238937985704
+Corr DTLearner: 0.7673600047262129
+Corr BagLearner: 0.8464675211941534
+
+
+LEAF SIZE 17:
+
+In sample testing for leaf size 17:
+RMSE DTLearner: 0.005474926538938898
+RMSE BagLearner: 0.004685106541347817
+Corr DTLearner: 0.8465017511089079
+Corr BagLearner: 0.8979908456739025
+
+Out sample testing for leaf size 17:
+RMSE DTLearner: 0.006963705339879846
+RMSE BagLearner: 0.006187421672735282
+Corr DTLearner: 0.7673600047262129
+Corr BagLearner: 0.8349417825932921
+
+
+LEAF SIZE 18:
+
+In sample testing for leaf size 18:
+RMSE DTLearner: 0.005482240215267469
+RMSE BagLearner: 0.00471244917148192
+Corr DTLearner: 0.8460813726711987
+Corr BagLearner: 0.8961011173003677
+
+Out sample testing for leaf size 18:
+RMSE DTLearner: 0.0069505937038552516
+RMSE BagLearner: 0.006251955910103545
+Corr DTLearner: 0.76864196628507
+Corr BagLearner: 0.8285593768008684
+
+
+LEAF SIZE 19:
+
+In sample testing for leaf size 19:
+RMSE DTLearner: 0.005555196493733495
+RMSE BagLearner: 0.004916185336799144
+Corr DTLearner: 0.8417248856665285
+Corr BagLearner: 0.8884732910980637
+
+Out sample testing for leaf size 19:
+RMSE DTLearner: 0.006967377612370144
+RMSE BagLearner: 0.0063295629780195616
+Corr DTLearner: 0.765264062282511
+Corr BagLearner: 0.8359705665448002
+
+
+LEAF SIZE 20:
+
+In sample testing for leaf size 20:
+RMSE DTLearner: 0.006126835940545526
+RMSE BagLearner: 0.004944407264218625
+Corr DTLearner: 0.8042327434581086
+Corr BagLearner: 0.8852741371789561
+
+Out sample testing for leaf size 20:
+RMSE DTLearner: 0.007084396280152433
+RMSE BagLearner: 0.006542973403850151
+Corr DTLearner: 0.7571163406678714
+Corr BagLearner: 0.8128101090542665
+
+
+LEAF SIZE 21:
+
+In sample testing for leaf size 21:
+RMSE DTLearner: 0.006502893509309968
+RMSE BagLearner: 0.0051838077750136595
+Corr DTLearner: 0.7754053296568048
+Corr BagLearner: 0.8789500631340915
+
+Out sample testing for leaf size 21:
+RMSE DTLearner: 0.0074299296218454354
+RMSE BagLearner: 0.006593567707301712
+Corr DTLearner: 0.7276506402581304
+Corr BagLearner: 0.8138480183541137
+
+
+LEAF SIZE 22:
+
+In sample testing for leaf size 22:
+RMSE DTLearner: 0.006572394210050381
+RMSE BagLearner: 0.005364990347797061
+Corr DTLearner: 0.7699479139735602
+Corr BagLearner: 0.8608552866651417
+
+Out sample testing for leaf size 22:
+RMSE DTLearner: 0.007389743937807235
+RMSE BagLearner: 0.006512130793290118
+Corr DTLearner: 0.7306154621615182
+Corr BagLearner: 0.8127578667999424
+
+
+LEAF SIZE 23:
+
+In sample testing for leaf size 23:
+RMSE DTLearner: 0.006572394210050381
+RMSE BagLearner: 0.005555915185421496
+Corr DTLearner: 0.7699479139735602
+Corr BagLearner: 0.858408605133843
+
+Out sample testing for leaf size 23:
+RMSE DTLearner: 0.007389743937807235
+RMSE BagLearner: 0.006584549993531335
+Corr DTLearner: 0.7306154621615182
+Corr BagLearner: 0.819145952170309
+
+
+LEAF SIZE 24:
+
+In sample testing for leaf size 24:
+RMSE DTLearner: 0.006572394210050381
+RMSE BagLearner: 0.005554042519948024
+Corr DTLearner: 0.7699479139735602
+Corr BagLearner: 0.8591607989289204
+
+Out sample testing for leaf size 24:
+RMSE DTLearner: 0.007389743937807235
+RMSE BagLearner: 0.006705415734460726
+Corr DTLearner: 0.7306154621615182
+Corr BagLearner: 0.8048439742027862
+
+
+LEAF SIZE 25:
+
+In sample testing for leaf size 25:
+RMSE DTLearner: 0.006572394210050381
+RMSE BagLearner: 0.005582926099572747
+Corr DTLearner: 0.7699479139735602
+Corr BagLearner: 0.8610870133719554
+
+Out sample testing for leaf size 25:
+RMSE DTLearner: 0.007389743937807235
+RMSE BagLearner: 0.006607752806455073
+Corr DTLearner: 0.7306154621615182
+Corr BagLearner: 0.8148837070950934
+
+
+LEAF SIZE 26:
+
+In sample testing for leaf size 26:
+RMSE DTLearner: 0.006572394210050381
+RMSE BagLearner: 0.005629900846994654
+Corr DTLearner: 0.7699479139735602
+Corr BagLearner: 0.8534323136461835
+
+Out sample testing for leaf size 26:
+RMSE DTLearner: 0.007389743937807235
+RMSE BagLearner: 0.006453119381669761
+Corr DTLearner: 0.7306154621615182
+Corr BagLearner: 0.823791127685589
+
+
+LEAF SIZE 27:
+
+In sample testing for leaf size 27:
+RMSE DTLearner: 0.006572394210050381
+RMSE BagLearner: 0.005398314784814939
+Corr DTLearner: 0.7699479139735602
+Corr BagLearner: 0.8660693267636024
+
+Out sample testing for leaf size 27:
+RMSE DTLearner: 0.007389743937807235
+RMSE BagLearner: 0.006562459915420013
+Corr DTLearner: 0.7306154621615182
+Corr BagLearner: 0.8168601729243926
+
+
+LEAF SIZE 28:
+
+In sample testing for leaf size 28:
+RMSE DTLearner: 0.006572394210050381
+RMSE BagLearner: 0.005537453919998181
+Corr DTLearner: 0.7699479139735602
+Corr BagLearner: 0.8591480112266849
+
+Out sample testing for leaf size 28:
+RMSE DTLearner: 0.007389743937807235
+RMSE BagLearner: 0.006480275458519291
+Corr DTLearner: 0.7306154621615182
+Corr BagLearner: 0.824568110922476
+
+
+LEAF SIZE 29:
+
+In sample testing for leaf size 29:
+RMSE DTLearner: 0.006572394210050381
+RMSE BagLearner: 0.00541630699555349
+Corr DTLearner: 0.7699479139735602
+Corr BagLearner: 0.8595960107183597
+
+Out sample testing for leaf size 29:
+RMSE DTLearner: 0.007389743937807235
+RMSE BagLearner: 0.006453207992758237
+Corr DTLearner: 0.7306154621615182
+Corr BagLearner: 0.8211783687674148
+
+
+LEAF SIZE 30:
+
+In sample testing for leaf size 30:
+RMSE DTLearner: 0.006572394210050381
+RMSE BagLearner: 0.0055344293521384265
+Corr DTLearner: 0.7699479139735602
+Corr BagLearner: 0.8564824268525276
+
+Out sample testing for leaf size 30:
+RMSE DTLearner: 0.007389743937807235
+RMSE BagLearner: 0.006355249377272419
+Corr DTLearner: 0.7306154621615182
+Corr BagLearner: 0.828914005934223
+
+
+LEAF SIZE 31:
+
+In sample testing for leaf size 31:
+RMSE DTLearner: 0.006572394210050381
+RMSE BagLearner: 0.005362253276525807
+Corr DTLearner: 0.7699479139735602
+Corr BagLearner: 0.8666776177991531
+
+Out sample testing for leaf size 31:
+RMSE DTLearner: 0.007389743937807235
+RMSE BagLearner: 0.006575924470709958
+Corr DTLearner: 0.7306154621615182
+Corr BagLearner: 0.8143088558429904
+
+
+LEAF SIZE 32:
+
+In sample testing for leaf size 32:
+RMSE DTLearner: 0.006572394210050381
+RMSE BagLearner: 0.005535090348662223
+Corr DTLearner: 0.7699479139735602
+Corr BagLearner: 0.8575329485625695
+
+Out sample testing for leaf size 32:
+RMSE DTLearner: 0.007389743937807235
+RMSE BagLearner: 0.006596638026811296
+Corr DTLearner: 0.7306154621615182
+Corr BagLearner: 0.8104543631471305
+
+
+LEAF SIZE 33:
+
+In sample testing for leaf size 33:
+RMSE DTLearner: 0.006572394210050381
+RMSE BagLearner: 0.00534524410412902
+Corr DTLearner: 0.7699479139735602
+Corr BagLearner: 0.8662115078796384
+
+Out sample testing for leaf size 33:
+RMSE DTLearner: 0.007389743937807235
+RMSE BagLearner: 0.006475536384757024
+Corr DTLearner: 0.7306154621615182
+Corr BagLearner: 0.8263878690398536
+
+
+LEAF SIZE 34:
+
+In sample testing for leaf size 34:
+RMSE DTLearner: 0.006572394210050381
+RMSE BagLearner: 0.005389348258616432
+Corr DTLearner: 0.7699479139735602
+Corr BagLearner: 0.8674942857410854
+
+Out sample testing for leaf size 34:
+RMSE DTLearner: 0.007389743937807235
+RMSE BagLearner: 0.006511624797340494
+Corr DTLearner: 0.7306154621615182
+Corr BagLearner: 0.8161746453490372
+
+
+LEAF SIZE 35:
+
+In sample testing for leaf size 35:
+RMSE DTLearner: 0.006572394210050381
+RMSE BagLearner: 0.005503970592421399
+Corr DTLearner: 0.7699479139735602
+Corr BagLearner: 0.8564584904991308
+
+Out sample testing for leaf size 35:
+RMSE DTLearner: 0.007389743937807235
+RMSE BagLearner: 0.006601296070582025
+Corr DTLearner: 0.7306154621615182
+Corr BagLearner: 0.8140176026361965
+
+
+LEAF SIZE 36:
+
+In sample testing for leaf size 36:
+RMSE DTLearner: 0.006572394210050381
+RMSE BagLearner: 0.005397506789361398
+Corr DTLearner: 0.7699479139735602
+Corr BagLearner: 0.8631552244516205
+
+Out sample testing for leaf size 36:
+RMSE DTLearner: 0.007389743937807235
+RMSE BagLearner: 0.0067873177919314
+Corr DTLearner: 0.7306154621615182
+Corr BagLearner: 0.7963352629710027
+
+
+LEAF SIZE 37:
+
+In sample testing for leaf size 37:
+RMSE DTLearner: 0.006586924740383901
+RMSE BagLearner: 0.005472071161488576
+Corr DTLearner: 0.7688961290391019
+Corr BagLearner: 0.8609314017667489
+
+Out sample testing for leaf size 37:
+RMSE DTLearner: 0.00740074247127293
+RMSE BagLearner: 0.006671896627342947
+Corr DTLearner: 0.7292174127408034
+Corr BagLearner: 0.8033544019496126
+
+
+LEAF SIZE 38:
+
+In sample testing for leaf size 38:
+RMSE DTLearner: 0.006586924740383901
+RMSE BagLearner: 0.005545037525599753
+Corr DTLearner: 0.7688961290391019
+Corr BagLearner: 0.8590820707077208
+
+Out sample testing for leaf size 38:
+RMSE DTLearner: 0.00740074247127293
+RMSE BagLearner: 0.0067138878930893715
+Corr DTLearner: 0.7292174127408034
+Corr BagLearner: 0.8033558604616566
+
+
+LEAF SIZE 39:
+
+In sample testing for leaf size 39:
+RMSE DTLearner: 0.006586924740383901
+RMSE BagLearner: 0.005621602873327974
+Corr DTLearner: 0.7688961290391019
+Corr BagLearner: 0.8536817646729484
+
+Out sample testing for leaf size 39:
+RMSE DTLearner: 0.00740074247127293
+RMSE BagLearner: 0.0069710776178698464
+Corr DTLearner: 0.7292174127408034
+Corr BagLearner: 0.7855680569191992
+
+
+LEAF SIZE 40:
+
+In sample testing for leaf size 40:
+RMSE DTLearner: 0.006852038793026266
+RMSE BagLearner: 0.005981406554305481
+Corr DTLearner: 0.7463788408112827
+Corr BagLearner: 0.829678104026633
+
+Out sample testing for leaf size 40:
+RMSE DTLearner: 0.00781160151143111
+RMSE BagLearner: 0.007041741542101932
+Corr DTLearner: 0.7022350221951812
+Corr BagLearner: 0.785637763906389
+
+
+LEAF SIZE 41:
+
+In sample testing for leaf size 41:
+RMSE DTLearner: 0.00741179265166336
+RMSE BagLearner: 0.006219969474747122
+Corr DTLearner: 0.6979329586859692
+Corr BagLearner: 0.8142668639663294
+
+Out sample testing for leaf size 41:
+RMSE DTLearner: 0.0076794483687956105
+RMSE BagLearner: 0.007160912451576477
+Corr DTLearner: 0.713562531474891
+Corr BagLearner: 0.7742283296983685
+
+
+LEAF SIZE 42:
+
+In sample testing for leaf size 42:
+RMSE DTLearner: 0.00741179265166336
+RMSE BagLearner: 0.006355663164077431
+Corr DTLearner: 0.6979329586859692
+Corr BagLearner: 0.8109457107538462
+
+Out sample testing for leaf size 42:
+RMSE DTLearner: 0.0076794483687956105
+RMSE BagLearner: 0.007304468905501529
+Corr DTLearner: 0.713562531474891
+Corr BagLearner: 0.7642143848098314
+
+
+LEAF SIZE 43:
+
+In sample testing for leaf size 43:
+RMSE DTLearner: 0.007437429058725966
+RMSE BagLearner: 0.006634901295119452
+Corr DTLearner: 0.6966196744669599
+Corr BagLearner: 0.7947173296318882
+
+Out sample testing for leaf size 43:
+RMSE DTLearner: 0.0077045011965249915
+RMSE BagLearner: 0.007147372662950256
+Corr DTLearner: 0.7101960145846908
+Corr BagLearner: 0.7899960665648175
+
+
+LEAF SIZE 44:
+
+In sample testing for leaf size 44:
+RMSE DTLearner: 0.007437429058725966
+RMSE BagLearner: 0.006572911136370891
+Corr DTLearner: 0.6966196744669599
+Corr BagLearner: 0.7965831572439129
+
+Out sample testing for leaf size 44:
+RMSE DTLearner: 0.0077045011965249915
+RMSE BagLearner: 0.007239677576908352
+Corr DTLearner: 0.7101960145846908
+Corr BagLearner: 0.7806132677249177
+
+
+LEAF SIZE 45:
+
+In sample testing for leaf size 45:
+RMSE DTLearner: 0.007437429058725966
+RMSE BagLearner: 0.00661552664819708
+Corr DTLearner: 0.6966196744669599
+Corr BagLearner: 0.7992954606416036
+
+Out sample testing for leaf size 45:
+RMSE DTLearner: 0.0077045011965249915
+RMSE BagLearner: 0.007368791977787829
+Corr DTLearner: 0.7101960145846908
+Corr BagLearner: 0.7733496179384124
+
+
+LEAF SIZE 46:
+
+In sample testing for leaf size 46:
+RMSE DTLearner: 0.007437429058725966
+RMSE BagLearner: 0.00653977260974781
+Corr DTLearner: 0.6966196744669599
+Corr BagLearner: 0.7969414121659089
+
+Out sample testing for leaf size 46:
+RMSE DTLearner: 0.0077045011965249915
+RMSE BagLearner: 0.007131234338013129
+Corr DTLearner: 0.7101960145846908
+Corr BagLearner: 0.7878593028720996
+
+
+LEAF SIZE 47:
+
+In sample testing for leaf size 47:
+RMSE DTLearner: 0.007437429058725966
+RMSE BagLearner: 0.006535947445611413
+Corr DTLearner: 0.6966196744669599
+Corr BagLearner: 0.8026843247980538
+
+Out sample testing for leaf size 47:
+RMSE DTLearner: 0.0077045011965249915
+RMSE BagLearner: 0.007272642675297953
+Corr DTLearner: 0.7101960145846908
+Corr BagLearner: 0.7743512565434609
+
+
+LEAF SIZE 48:
+
+In sample testing for leaf size 48:
+RMSE DTLearner: 0.007437429058725966
+RMSE BagLearner: 0.00666362804636034
+Corr DTLearner: 0.6966196744669599
+Corr BagLearner: 0.7846433321996805
+
+Out sample testing for leaf size 48:
+RMSE DTLearner: 0.0077045011965249915
+RMSE BagLearner: 0.007289748688534482
+Corr DTLearner: 0.7101960145846908
+Corr BagLearner: 0.7678064273114422
+
+
+LEAF SIZE 49:
+
+In sample testing for leaf size 49:
+RMSE DTLearner: 0.007437429058725966
+RMSE BagLearner: 0.006599604440491595
+Corr DTLearner: 0.6966196744669599
+Corr BagLearner: 0.7962234762932813
+
+Out sample testing for leaf size 49:
+RMSE DTLearner: 0.0077045011965249915
+RMSE BagLearner: 0.007315386117182246
+Corr DTLearner: 0.7101960145846908
+Corr BagLearner: 0.77018989208834
+
+
+LEAF SIZE 50:
+
+In sample testing for leaf size 50:
+RMSE DTLearner: 0.007437429058725966
+RMSE BagLearner: 0.00666251703608156
+Corr DTLearner: 0.6966196744669599
+Corr BagLearner: 0.7890865596078197
+
+Out sample testing for leaf size 50:
+RMSE DTLearner: 0.0077045011965249915
+RMSE BagLearner: 0.007166879402955626
+Corr DTLearner: 0.7101960145846908
+Corr BagLearner: 0.7862241827848248
+
+
+EXPERIMENT 3:
+
+
+
+LEAF SIZE 1:
+
+In sample testing for leaf size 1:
+Median Abs Error DTLearner: 0.0
+Median Abs Error RTLearner: 0.0
+
+Out sample testing for leaf size 1:
+Median Abs Error DTLearner: 0.004740640999999999
+Median Abs Error RTLearner: 0.0052965930000000005
+DT Node Count: 641
+RT Node Count: 641
+
+
+LEAF SIZE 2:
+
+In sample testing for leaf size 2:
+Median Abs Error DTLearner: 0.0010435660000000001
+Median Abs Error RTLearner: 0.0016105825000000008
+
+Out sample testing for leaf size 2:
+Median Abs Error DTLearner: 0.004740640999999999
+Median Abs Error RTLearner: 0.0047001774999999996
+DT Node Count: 385
+RT Node Count: 385
+
+
+LEAF SIZE 3:
+
+In sample testing for leaf size 3:
+Median Abs Error DTLearner: 0.0014250415
+Median Abs Error RTLearner: 0.0018790185
+
+Out sample testing for leaf size 3:
+Median Abs Error DTLearner: 0.004421181
+Median Abs Error RTLearner: 0.0047235285
+DT Node Count: 255
+RT Node Count: 255
+
+
+LEAF SIZE 4:
+
+In sample testing for leaf size 4:
+Median Abs Error DTLearner: 0.0013764475
+Median Abs Error RTLearner: 0.0023509324999999998
+
+Out sample testing for leaf size 4:
+Median Abs Error DTLearner: 0.004286567
+Median Abs Error RTLearner: 0.005889007999999999
+DT Node Count: 245
+RT Node Count: 255
+
+
+LEAF SIZE 5:
+
+In sample testing for leaf size 5:
+Median Abs Error DTLearner: 0.001729352
+Median Abs Error RTLearner: 0.0025846819999999996
+
+Out sample testing for leaf size 5:
+Median Abs Error DTLearner: 0.004325134
+Median Abs Error RTLearner: 0.004225591000000001
+DT Node Count: 139
+RT Node Count: 129
+
+
+LEAF SIZE 6:
+
+In sample testing for leaf size 6:
+Median Abs Error DTLearner: 0.002062259
+Median Abs Error RTLearner: 0.002838386
+
+Out sample testing for leaf size 6:
+Median Abs Error DTLearner: 0.004350058
+Median Abs Error RTLearner: 0.004957561
+DT Node Count: 127
+RT Node Count: 127
+
+
+LEAF SIZE 7:
+
+In sample testing for leaf size 7:
+Median Abs Error DTLearner: 0.002062259
+Median Abs Error RTLearner: 0.002526459
+
+Out sample testing for leaf size 7:
+Median Abs Error DTLearner: 0.004350058
+Median Abs Error RTLearner: 0.00427543
+DT Node Count: 127
+RT Node Count: 127
+
+
+LEAF SIZE 8:
+
+In sample testing for leaf size 8:
+Median Abs Error DTLearner: 0.002062259
+Median Abs Error RTLearner: 0.0028090720000000006
+
+Out sample testing for leaf size 8:
+Median Abs Error DTLearner: 0.004350058
+Median Abs Error RTLearner: 0.0050075200000000005
+DT Node Count: 127
+RT Node Count: 127
+
+
+LEAF SIZE 9:
+
+In sample testing for leaf size 9:
+Median Abs Error DTLearner: 0.002117576999999999
+Median Abs Error RTLearner: 0.0026798639999999997
+
+Out sample testing for leaf size 9:
+Median Abs Error DTLearner: 0.004350058
+Median Abs Error RTLearner: 0.004622071
+DT Node Count: 119
+RT Node Count: 127
+
+
+LEAF SIZE 10:
+
+In sample testing for leaf size 10:
+Median Abs Error DTLearner: 0.0029790369999999995
+Median Abs Error RTLearner: 0.00349148
+
+Out sample testing for leaf size 10:
+Median Abs Error DTLearner: 0.00420002
+Median Abs Error RTLearner: 0.004464232
+DT Node Count: 73
+RT Node Count: 67
+
+
+LEAF SIZE 11:
+
+In sample testing for leaf size 11:
+Median Abs Error DTLearner: 0.00304829
+Median Abs Error RTLearner: 0.0032255339999999995
+
+Out sample testing for leaf size 11:
+Median Abs Error DTLearner: 0.0042951280000000005
+Median Abs Error RTLearner: 0.0043865685
+DT Node Count: 63
+RT Node Count: 63
+
+
+LEAF SIZE 12:
+
+In sample testing for leaf size 12:
+Median Abs Error DTLearner: 0.00304829
+Median Abs Error RTLearner: 0.0032962090000000005
+
+Out sample testing for leaf size 12:
+Median Abs Error DTLearner: 0.0042951280000000005
+Median Abs Error RTLearner: 0.004884722
+DT Node Count: 63
+RT Node Count: 63
+
+
+LEAF SIZE 13:
+
+In sample testing for leaf size 13:
+Median Abs Error DTLearner: 0.00304829
+Median Abs Error RTLearner: 0.003746325
+
+Out sample testing for leaf size 13:
+Median Abs Error DTLearner: 0.0042951280000000005
+Median Abs Error RTLearner: 0.0050152605
+DT Node Count: 63
+RT Node Count: 63
+
+
+LEAF SIZE 14:
+
+In sample testing for leaf size 14:
+Median Abs Error DTLearner: 0.00304829
+Median Abs Error RTLearner: 0.0034896285
+
+Out sample testing for leaf size 14:
+Median Abs Error DTLearner: 0.0042951280000000005
+Median Abs Error RTLearner: 0.004721414
+DT Node Count: 63
+RT Node Count: 63
+
+
+LEAF SIZE 15:
+
+In sample testing for leaf size 15:
+Median Abs Error DTLearner: 0.00304829
+Median Abs Error RTLearner: 0.0034189184999999997
+
+Out sample testing for leaf size 15:
+Median Abs Error DTLearner: 0.0042951280000000005
+Median Abs Error RTLearner: 0.004484003
+DT Node Count: 63
+RT Node Count: 63
+
+
+LEAF SIZE 16:
+
+In sample testing for leaf size 16:
+Median Abs Error DTLearner: 0.00304829
+Median Abs Error RTLearner: 0.003621393
+
+Out sample testing for leaf size 16:
+Median Abs Error DTLearner: 0.0042951280000000005
+Median Abs Error RTLearner: 0.0046986805
+DT Node Count: 63
+RT Node Count: 63
+
+
+LEAF SIZE 17:
+
+In sample testing for leaf size 17:
+Median Abs Error DTLearner: 0.00304829
+Median Abs Error RTLearner: 0.0035358479999999994
+
+Out sample testing for leaf size 17:
+Median Abs Error DTLearner: 0.0042951280000000005
+Median Abs Error RTLearner: 0.0043742485
+DT Node Count: 63
+RT Node Count: 63
+
+
+LEAF SIZE 18:
+
+In sample testing for leaf size 18:
+Median Abs Error DTLearner: 0.003079406
+Median Abs Error RTLearner: 0.0034107375000000002
+
+Out sample testing for leaf size 18:
+Median Abs Error DTLearner: 0.0043616370000000015
+Median Abs Error RTLearner: 0.004949875
+DT Node Count: 61
+RT Node Count: 63
+
+
+LEAF SIZE 19:
+
+In sample testing for leaf size 19:
+Median Abs Error DTLearner: 0.0032577285000000003
+Median Abs Error RTLearner: 0.0032444414999999996
+
+Out sample testing for leaf size 19:
+Median Abs Error DTLearner: 0.0043616370000000015
+Median Abs Error RTLearner: 0.004485838999999999
+DT Node Count: 57
+RT Node Count: 63
+
+
+LEAF SIZE 20:
+
+In sample testing for leaf size 20:
+Median Abs Error DTLearner: 0.0032758075
+Median Abs Error RTLearner: 0.0037862975000000003
+
+Out sample testing for leaf size 20:
+Median Abs Error DTLearner: 0.004369498
+Median Abs Error RTLearner: 0.004252157
+DT Node Count: 39
+RT Node Count: 33
+
+
+LEAF SIZE 21:
+
+In sample testing for leaf size 21:
+Median Abs Error DTLearner: 0.0034012389999999995
+Median Abs Error RTLearner: 0.0037880365000000004
+
+Out sample testing for leaf size 21:
+Median Abs Error DTLearner: 0.004658706999999999
+Median Abs Error RTLearner: 0.004322139000000001
+DT Node Count: 33
+RT Node Count: 31
+
+
+LEAF SIZE 22:
+
+In sample testing for leaf size 22:
+Median Abs Error DTLearner: 0.003647811
+Median Abs Error RTLearner: 0.003598774
+
+Out sample testing for leaf size 22:
+Median Abs Error DTLearner: 0.004565878000000001
+Median Abs Error RTLearner: 0.004976052999999999
+DT Node Count: 31
+RT Node Count: 31
+
+
+LEAF SIZE 23:
+
+In sample testing for leaf size 23:
+Median Abs Error DTLearner: 0.003647811
+Median Abs Error RTLearner: 0.0038327255
+
+Out sample testing for leaf size 23:
+Median Abs Error DTLearner: 0.004565878000000001
+Median Abs Error RTLearner: 0.0051287995000000005
+DT Node Count: 31
+RT Node Count: 31
+
+
+LEAF SIZE 24:
+
+In sample testing for leaf size 24:
+Median Abs Error DTLearner: 0.003647811
+Median Abs Error RTLearner: 0.004156131
+
+Out sample testing for leaf size 24:
+Median Abs Error DTLearner: 0.004565878000000001
+Median Abs Error RTLearner: 0.003811827
+DT Node Count: 31
+RT Node Count: 31
+
+
+LEAF SIZE 25:
+
+In sample testing for leaf size 25:
+Median Abs Error DTLearner: 0.003647811
+Median Abs Error RTLearner: 0.003868878
+
+Out sample testing for leaf size 25:
+Median Abs Error DTLearner: 0.004565878000000001
+Median Abs Error RTLearner: 0.004350058
+DT Node Count: 31
+RT Node Count: 31
+
+
+LEAF SIZE 26:
+
+In sample testing for leaf size 26:
+Median Abs Error DTLearner: 0.003647811
+Median Abs Error RTLearner: 0.0038463505000000007
+
+Out sample testing for leaf size 26:
+Median Abs Error DTLearner: 0.004565878000000001
+Median Abs Error RTLearner: 0.0043430815
+DT Node Count: 31
+RT Node Count: 31
+
+
+LEAF SIZE 27:
+
+In sample testing for leaf size 27:
+Median Abs Error DTLearner: 0.003647811
+Median Abs Error RTLearner: 0.0035539210000000007
+
+Out sample testing for leaf size 27:
+Median Abs Error DTLearner: 0.004565878000000001
+Median Abs Error RTLearner: 0.004377156
+DT Node Count: 31
+RT Node Count: 31
+
+
+LEAF SIZE 28:
+
+In sample testing for leaf size 28:
+Median Abs Error DTLearner: 0.003647811
+Median Abs Error RTLearner: 0.003987214999999999
+
+Out sample testing for leaf size 28:
+Median Abs Error DTLearner: 0.004565878000000001
+Median Abs Error RTLearner: 0.0047993160000000005
+DT Node Count: 31
+RT Node Count: 31
+
+
+LEAF SIZE 29:
+
+In sample testing for leaf size 29:
+Median Abs Error DTLearner: 0.003647811
+Median Abs Error RTLearner: 0.0039929075
+
+Out sample testing for leaf size 29:
+Median Abs Error DTLearner: 0.004565878000000001
+Median Abs Error RTLearner: 0.004921375499999999
+DT Node Count: 31
+RT Node Count: 31
+
+
+LEAF SIZE 30:
+
+In sample testing for leaf size 30:
+Median Abs Error DTLearner: 0.003647811
+Median Abs Error RTLearner: 0.003906237
+
+Out sample testing for leaf size 30:
+Median Abs Error DTLearner: 0.004565878000000001
+Median Abs Error RTLearner: 0.004526892500000001
+DT Node Count: 31
+RT Node Count: 31
+
+
+LEAF SIZE 31:
+
+In sample testing for leaf size 31:
+Median Abs Error DTLearner: 0.003647811
+Median Abs Error RTLearner: 0.003784276
+
+Out sample testing for leaf size 31:
+Median Abs Error DTLearner: 0.004565878000000001
+Median Abs Error RTLearner: 0.003997393
+DT Node Count: 31
+RT Node Count: 31
+
+
+LEAF SIZE 32:
+
+In sample testing for leaf size 32:
+Median Abs Error DTLearner: 0.003647811
+Median Abs Error RTLearner: 0.0041385905
+
+Out sample testing for leaf size 32:
+Median Abs Error DTLearner: 0.004565878000000001
+Median Abs Error RTLearner: 0.004235805
+DT Node Count: 31
+RT Node Count: 31
+
+
+LEAF SIZE 33:
+
+In sample testing for leaf size 33:
+Median Abs Error DTLearner: 0.003647811
+Median Abs Error RTLearner: 0.0036891065
+
+Out sample testing for leaf size 33:
+Median Abs Error DTLearner: 0.004565878000000001
+Median Abs Error RTLearner: 0.0045837485
+DT Node Count: 31
+RT Node Count: 31
+
+
+LEAF SIZE 34:
+
+In sample testing for leaf size 34:
+Median Abs Error DTLearner: 0.003647811
+Median Abs Error RTLearner: 0.004086737
+
+Out sample testing for leaf size 34:
+Median Abs Error DTLearner: 0.004565878000000001
+Median Abs Error RTLearner: 0.004520015499999999
+DT Node Count: 31
+RT Node Count: 31
+
+
+LEAF SIZE 35:
+
+In sample testing for leaf size 35:
+Median Abs Error DTLearner: 0.003647811
+Median Abs Error RTLearner: 0.0039326105
+
+Out sample testing for leaf size 35:
+Median Abs Error DTLearner: 0.004565878000000001
+Median Abs Error RTLearner: 0.0052928765
+DT Node Count: 31
+RT Node Count: 31
+
+
+LEAF SIZE 36:
+
+In sample testing for leaf size 36:
+Median Abs Error DTLearner: 0.003647811
+Median Abs Error RTLearner: 0.003538186
+
+Out sample testing for leaf size 36:
+Median Abs Error DTLearner: 0.004565878000000001
+Median Abs Error RTLearner: 0.0046404655
+DT Node Count: 31
+RT Node Count: 31
+
+
+LEAF SIZE 37:
+
+In sample testing for leaf size 37:
+Median Abs Error DTLearner: 0.003607129
+Median Abs Error RTLearner: 0.004086737
+
+Out sample testing for leaf size 37:
+Median Abs Error DTLearner: 0.004655799
+Median Abs Error RTLearner: 0.004661843999999999
+DT Node Count: 29
+RT Node Count: 31
+
+
+LEAF SIZE 38:
+
+In sample testing for leaf size 38:
+Median Abs Error DTLearner: 0.003607129
+Median Abs Error RTLearner: 0.0034566379999999997
+
+Out sample testing for leaf size 38:
+Median Abs Error DTLearner: 0.004655799
+Median Abs Error RTLearner: 0.0047629809999999995
+DT Node Count: 29
+RT Node Count: 29
+
+
+LEAF SIZE 39:
+
+In sample testing for leaf size 39:
+Median Abs Error DTLearner: 0.003607129
+Median Abs Error RTLearner: 0.0040642595
+
+Out sample testing for leaf size 39:
+Median Abs Error DTLearner: 0.004655799
+Median Abs Error RTLearner: 0.0050179050000000005
+DT Node Count: 29
+RT Node Count: 31
+
+
+LEAF SIZE 40:
+
+In sample testing for leaf size 40:
+Median Abs Error DTLearner: 0.004091780999999999
+Median Abs Error RTLearner: 0.004354866000000001
+
+Out sample testing for leaf size 40:
+Median Abs Error DTLearner: 0.0043236155
+Median Abs Error RTLearner: 0.0044119545
+DT Node Count: 19
+RT Node Count: 17
+
+
+LEAF SIZE 41:
+
+In sample testing for leaf size 41:
+Median Abs Error DTLearner: 0.004171043
+Median Abs Error RTLearner: 0.0044030345
+
+Out sample testing for leaf size 41:
+Median Abs Error DTLearner: 0.004249465
+Median Abs Error RTLearner: 0.004552146
+DT Node Count: 17
+RT Node Count: 15
+
+
+LEAF SIZE 42:
+
+In sample testing for leaf size 42:
+Median Abs Error DTLearner: 0.004171043
+Median Abs Error RTLearner: 0.004487293
+
+Out sample testing for leaf size 42:
+Median Abs Error DTLearner: 0.004249465
+Median Abs Error RTLearner: 0.004687903
+DT Node Count: 17
+RT Node Count: 21
+
+
+LEAF SIZE 43:
+
+In sample testing for leaf size 43:
+Median Abs Error DTLearner: 0.00420798
+Median Abs Error RTLearner: 0.004354866000000001
+
+Out sample testing for leaf size 43:
+Median Abs Error DTLearner: 0.004249465
+Median Abs Error RTLearner: 0.004642833999999999
+DT Node Count: 15
+RT Node Count: 15
+
+
+LEAF SIZE 44:
+
+In sample testing for leaf size 44:
+Median Abs Error DTLearner: 0.00420798
+Median Abs Error RTLearner: 0.004213733
+
+Out sample testing for leaf size 44:
+Median Abs Error DTLearner: 0.004249465
+Median Abs Error RTLearner: 0.0047414835
+DT Node Count: 15
+RT Node Count: 15
+
+
+LEAF SIZE 45:
+
+In sample testing for leaf size 45:
+Median Abs Error DTLearner: 0.00420798
+Median Abs Error RTLearner: 0.004517778500000001
+
+Out sample testing for leaf size 45:
+Median Abs Error DTLearner: 0.004249465
+Median Abs Error RTLearner: 0.0043358715
+DT Node Count: 15
+RT Node Count: 15
+
+
+LEAF SIZE 46:
+
+In sample testing for leaf size 46:
+Median Abs Error DTLearner: 0.00420798
+Median Abs Error RTLearner: 0.0041012435
+
+Out sample testing for leaf size 46:
+Median Abs Error DTLearner: 0.004249465
+Median Abs Error RTLearner: 0.0036508799999999987
+DT Node Count: 15
+RT Node Count: 15
+
+
+LEAF SIZE 47:
+
+In sample testing for leaf size 47:
+Median Abs Error DTLearner: 0.00420798
+Median Abs Error RTLearner: 0.004675534
+
+Out sample testing for leaf size 47:
+Median Abs Error DTLearner: 0.004249465
+Median Abs Error RTLearner: 0.004533563499999999
+DT Node Count: 15
+RT Node Count: 15
+
+
+LEAF SIZE 48:
+
+In sample testing for leaf size 48:
+Median Abs Error DTLearner: 0.00420798
+Median Abs Error RTLearner: 0.004526626000000001
+
+Out sample testing for leaf size 48:
+Median Abs Error DTLearner: 0.004249465
+Median Abs Error RTLearner: 0.004129637
+DT Node Count: 15
+RT Node Count: 15
+
+
+LEAF SIZE 49:
+
+In sample testing for leaf size 49:
+Median Abs Error DTLearner: 0.00420798
+Median Abs Error RTLearner: 0.004425141
+
+Out sample testing for leaf size 49:
+Median Abs Error DTLearner: 0.004249465
+Median Abs Error RTLearner: 0.004183622500000001
+DT Node Count: 15
+RT Node Count: 15
+
+
+LEAF SIZE 50:
+
+In sample testing for leaf size 50:
+Median Abs Error DTLearner: 0.00420798
+Median Abs Error RTLearner: 0.0045436109999999995
+
+Out sample testing for leaf size 50:
+Median Abs Error DTLearner: 0.004249465
+Median Abs Error RTLearner: 0.004045393999999999
+DT Node Count: 15
+RT Node Count: 15
