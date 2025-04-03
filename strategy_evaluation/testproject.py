@@ -7,6 +7,7 @@ import TheoreticallyOptimalStrategy as TOS
 from marketsimcode import compute_portvals, compute_stats
 import indicators
 from strategy_evaluation.ManualStrategy import ManualStrategy
+from StrategyLearner import StrategyLearner
 
 
 def author():
@@ -26,7 +27,12 @@ if __name__ == "__main__":
     impact = 0.05
 
     manualstrategy = ManualStrategy()
-    trades = manualstrategy.testpolicy(symbol="JPM", sd=in_sample_sd, ed=in_sample_ed)
+    strategylearner = StrategyLearner()
+    # trades = manualstrategy.testpolicy(symbol="JPM", sd=in_sample_sd, ed=in_sample_ed)
+    strategylearner.add_evidence(symbol="JPM", sd=in_sample_sd, ed=in_sample_ed)
+    trades = strategylearner.testPolicy(symbol="JPM", sd=in_sample_sd, ed=in_sample_ed)
+
+    print(trades)
 
 
 

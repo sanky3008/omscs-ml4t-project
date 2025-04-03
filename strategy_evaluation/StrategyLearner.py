@@ -1,5 +1,4 @@
-""""""  		  	   		 	 	 			  		 			     			  	 
-"""  		  	   		 	 	 			  		 			     			  	 
+"""
 Template for implementing StrategyLearner  (c) 2016 Tucker Balch  		  	   		 	 	 			  		 			     			  	 
   		  	   		 	 	 			  		 			     			  	 
 Copyright 2018, Georgia Institute of Technology (Georgia Tech)  		  	   		 	 	 			  		 			     			  	 
@@ -27,11 +26,17 @@ GT User ID: sphadnis9
 GT ID: 904081199	  	   		 	 	 			  		 			     			  	 
 """  		  	   		 	 	 			  		 			     			  	 
   		  	   		 	 	 			  		 			     			  	 
-import datetime as dt  		  	   		 	 	 			  		 			     			  	 
-import random  		  	   		 	 	 			  		 			     			  	 
-  		  	   		 	 	 			  		 			     			  	 
-import pandas as pd  		  	   		 	 	 			  		 			     			  	 
-import util as ut  		  	   		 	 	 			  		 			     			  	 
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import datetime as dt
+import util as ut
+import QLearner as ql
+
+import TheoreticallyOptimalStrategy as TOS
+from marketsimcode import compute_portvals, compute_stats
+import indicators
+from util import get_data
   		  	   		 	 	 			  		 			     			  	 
   		  	   		 	 	 			  		 			     			  	 
 class StrategyLearner(object):  		  	   		 	 	 			  		 			     			  	 
@@ -53,16 +58,77 @@ class StrategyLearner(object):
         """  		  	   		 	 	 			  		 			     			  	 
         self.verbose = verbose  		  	   		 	 	 			  		 			     			  	 
         self.impact = impact  		  	   		 	 	 			  		 			     			  	 
-        self.commission = commission  		  	   		 	 	 			  		 			     			  	 
-  		  	   		 	 	 			  		 			     			  	 
-    # this method should create a QLearner, and train it for trading  		  	   		 	 	 			  		 			     			  	 
+        self.commission = commission
+        self.epochs = 500
+        self.learner = ql.QLearner(
+            num_states=332,
+            num_actions=3, # 0 -> do nothing, 1 -> buy, 2 -> sell
+            alpha=0.2,
+            gamma=0.9,
+            rar=0.5,
+            radr=0.99,
+            dyna=0,
+            verbose=False,
+        )
+
+    # this method gives a single state for given indicators
+    def discretize(self, bbp, rsi, macd_crossover):
+        dbbp = min(bbp, 99) // 10
+        drsi = min(rsi, 99) // 10
+
+        return dbbp * 10 * 3 + drsi * 3 + macd_crossover
+
+    # this method fetch price data and generates states
+    def get_indicators(self, symbol, sd, ed):
+        indicator = indicators.Indicators(symbol, pd.date_range(sd, ed))
+        bbp = indicator.get_bbp(window=20)
+        rsi = indicator.get_rsi(window=14)
+        macd = indicator.get_macd().loc[sd:]  # My version of indicators.py is also returning values 9 market days prior to sd
+
+        # Calculate MACD crossover
+        macd_prev = macd.shift(1)
+        macd_prev.iloc[0] = macd_prev.iloc[1]
+        conditions = [
+            (macd_prev <= 0) & (macd > 0),
+            (macd_prev >= 0) & (macd < 0)
+        ]
+        values = [1, 2] # 0 -> do nothing, 1 -> buy, 2 -> sell
+
+        # Documentation: https://numpy.org/doc/2.1/reference/generated/numpy.select.html
+        macd_crossover = pd.DataFrame({'result': np.select(conditions, values, default=0)}, index=macd.index,
+                                      columns=["result"])
+
+        return bbp, rsi, macd_crossover
+
+    # this method will get the price data for the given symbol
+    def get_price(self, symbol, sd, ed):
+        prices = get_data(symbol, pd.date_range(sd, ed))
+
+        return prices[symbol]
+
+    # update position based on action
+    def update_pos(self, pos, action):
+        if action == 0:
+            return pos
+        elif action == 1:
+            return 1000
+        elif action == 2:
+            return -1000
+
+    # compute daily returns
+    def get_dr(self, price):
+        dr = (price / price.shift(1)) - 1
+        dr.iloc[0] = 0
+        return dr
+
+    # this method should create a QLearner, and train it for trading
     def add_evidence(  		  	   		 	 	 			  		 			     			  	 
         self,  		  	   		 	 	 			  		 			     			  	 
         symbol="IBM",  		  	   		 	 	 			  		 			     			  	 
         sd=dt.datetime(2008, 1, 1),  		  	   		 	 	 			  		 			     			  	 
         ed=dt.datetime(2009, 1, 1),  		  	   		 	 	 			  		 			     			  	 
         sv=10000,  		  	   		 	 	 			  		 			     			  	 
-    ):  		  	   		 	 	 			  		 			     			  	 
+    ):
         """  		  	   		 	 	 			  		 			     			  	 
         Trains your strategy learner over a given time frame.  		  	   		 	 	 			  		 			     			  	 
   		  	   		 	 	 			  		 			     			  	 
@@ -73,30 +139,58 @@ class StrategyLearner(object):
         :param ed: A datetime object that represents the end date, defaults to 1/1/2009  		  	   		 	 	 			  		 			     			  	 
         :type ed: datetime  		  	   		 	 	 			  		 			     			  	 
         :param sv: The starting value of the portfolio  		  	   		 	 	 			  		 			     			  	 
-        :type sv: int  		  	   		 	 	 			  		 			     			  	 
-        """  		  	   		 	 	 			  		 			     			  	 
+        :type sv: int  	 	   		 	 	 			  		 			     			  	 
+        """
+
+        # add your code to do learning here
+        bbp, rsi, macd_crossover = self.get_indicators(symbol, sd, ed)
+        price = self.get_price([symbol], sd, ed)
+        dr = self.get_dr(price)
+        signals = pd.DataFrame(0, index=price.index, columns=["signal"])
+
+        state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd_crossover.iloc[0][0]))
+        action = self.learner.querysetstate(state)
+        net_position = self.update_pos(0, action)
+        scores = []
+        for count in range(0, 10000):
+            scores.append(0)
+            for date in price.index.tolist()[1:]:
+                reward = int(dr.loc[date, symbol]*net_position) # Accommodate for reward & commission
+                scores[-1] += reward
+                state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd_crossover.loc[date][0]))
+                action = self.learner.query(state, reward)
+                net_position = self.update_pos(net_position, action)
+                signals.loc[date, symbol] = action
+
+            print("\nEPOCH: ", count)
+            print("\nReward: ", scores[-1])
+            print("\nScores & Count: ", scores, count)
+            print("\n")
+
+            if len(scores) >= 3 and (abs(scores[-2]/scores[-1] - 1) <= 0.01) and (abs(scores[-3]/scores[-2] - 1) <= 0.01):
+                break
+
+        return
   		  	   		 	 	 			  		 			     			  	 
-        # add your code to do learning here  		  	   		 	 	 			  		 			     			  	 
-  		  	   		 	 	 			  		 			     			  	 
-        # example usage of the old backward compatible util function  		  	   		 	 	 			  		 			     			  	 
-        syms = [symbol]  		  	   		 	 	 			  		 			     			  	 
-        dates = pd.date_range(sd, ed)  		  	   		 	 	 			  		 			     			  	 
-        prices_all = ut.get_data(syms, dates)  # automatically adds SPY  		  	   		 	 	 			  		 			     			  	 
-        prices = prices_all[syms]  # only portfolio symbols  		  	   		 	 	 			  		 			     			  	 
-        prices_SPY = prices_all["SPY"]  # only SPY, for comparison later  		  	   		 	 	 			  		 			     			  	 
-        if self.verbose:  		  	   		 	 	 			  		 			     			  	 
-            print(prices)  		  	   		 	 	 			  		 			     			  	 
-  		  	   		 	 	 			  		 			     			  	 
-        # example use with new colname  		  	   		 	 	 			  		 			     			  	 
-        volume_all = ut.get_data(  		  	   		 	 	 			  		 			     			  	 
-            syms, dates, colname="Volume"  		  	   		 	 	 			  		 			     			  	 
-        )  # automatically adds SPY  		  	   		 	 	 			  		 			     			  	 
-        volume = volume_all[syms]  # only portfolio symbols  		  	   		 	 	 			  		 			     			  	 
-        volume_SPY = volume_all["SPY"]  # only SPY, for comparison later  		  	   		 	 	 			  		 			     			  	 
-        if self.verbose:  		  	   		 	 	 			  		 			     			  	 
-            print(volume)  		  	   		 	 	 			  		 			     			  	 
-  		  	   		 	 	 			  		 			     			  	 
-    # this method should use the existing policy and test it against new data  		  	   		 	 	 			  		 			     			  	 
+    # for a set of signals, this method generates it into a trades df
+    def get_trades(self, signals, symbol):
+        net_position = 0
+        trades = pd.DataFrame(0, index=signals.index, columns=[symbol])
+
+        for date in signals.index:
+            if signals.loc[date].iloc[0] == 1:
+                trades.loc[date] = 1000 - net_position
+            elif signals.loc[date].iloc[0] == 2:
+                trades.loc[date] = -1000 - net_position
+
+            net_position += trades.loc[pd.to_datetime(date), symbol]
+
+        if self.verbose:
+            print("Trade File\n", trades)
+
+        return trades
+
+    # this method should use the existing policy and test it against new data
     def testPolicy(  		  	   		 	 	 			  		 			     			  	 
         self,  		  	   		 	 	 			  		 			     			  	 
         symbol="IBM",  		  	   		 	 	 			  		 			     			  	 
@@ -120,29 +214,25 @@ class StrategyLearner(object):
             Values of +2000 and -2000 for trades are also legal when switching from long to short or short to  		  	   		 	 	 			  		 			     			  	 
             long so long as net holdings are constrained to -1000, 0, and 1000.  		  	   		 	 	 			  		 			     			  	 
         :rtype: pandas.DataFrame  		  	   		 	 	 			  		 			     			  	 
-        """  		  	   		 	 	 			  		 			     			  	 
-  		  	   		 	 	 			  		 			     			  	 
-        # here we build a fake set of trades  		  	   		 	 	 			  		 			     			  	 
-        # your code should return the same sort of data  		  	   		 	 	 			  		 			     			  	 
-        dates = pd.date_range(sd, ed)  		  	   		 	 	 			  		 			     			  	 
-        prices_all = ut.get_data([symbol], dates)  # automatically adds SPY  		  	   		 	 	 			  		 			     			  	 
-        trades = prices_all[[symbol,]]  # only portfolio symbols  		  	   		 	 	 			  		 			     			  	 
-        trades_SPY = prices_all["SPY"]  # only SPY, for comparison later  		  	   		 	 	 			  		 			     			  	 
-        trades.values[:, :] = 0  # set them all to nothing  		  	   		 	 	 			  		 			     			  	 
-        trades.values[0, :] = 1000  # add a BUY at the start  		  	   		 	 	 			  		 			     			  	 
-        trades.values[40, :] = -1000  # add a SELL  		  	   		 	 	 			  		 			     			  	 
-        trades.values[41, :] = 1000  # add a BUY  		  	   		 	 	 			  		 			     			  	 
-        trades.values[60, :] = -2000  # go short from long  		  	   		 	 	 			  		 			     			  	 
-        trades.values[61, :] = 2000  # go long from short  		  	   		 	 	 			  		 			     			  	 
-        trades.values[-1, :] = -1000  # exit on the last day  		  	   		 	 	 			  		 			     			  	 
-        if self.verbose:  		  	   		 	 	 			  		 			     			  	 
-            print(type(trades))  # it better be a DataFrame!  		  	   		 	 	 			  		 			     			  	 
-        if self.verbose:  		  	   		 	 	 			  		 			     			  	 
-            print(trades)  		  	   		 	 	 			  		 			     			  	 
-        if self.verbose:  		  	   		 	 	 			  		 			     			  	 
-            print(prices_all)  		  	   		 	 	 			  		 			     			  	 
-        return trades  		  	   		 	 	 			  		 			     			  	 
-  		  	   		 	 	 			  		 			     			  	 
+        """
+        bbp, rsi, macd_crossover = self.get_indicators(symbol, sd, ed)
+        price = self.get_price([symbol], sd, ed)
+        dr = self.get_dr(price)
+        signals = pd.DataFrame(0, index=price.index, columns=[symbol])
+
+        state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd_crossover.iloc[0][0]))
+        action = self.learner.querysetstate(state)
+        net_position = self.update_pos(0, action)
+        for date in price.index.tolist()[1:]:
+            reward = int(dr.loc[date, symbol] * net_position)
+            state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd_crossover.loc[date][0]))
+            action = self.learner.query(state, reward)
+            net_position = self.update_pos(net_position, action)
+            signals.loc[date, symbol] = action
+
+        print(signals)
+        return self.get_trades(signals, symbol)
+
   		  	   		 	 	 			  		 			     			  	 
 if __name__ == "__main__":  		  	   		 	 	 			  		 			     			  	 
     print("One does not simply think up a strategy")  		  	   		 	 	 			  		 			     			  	 

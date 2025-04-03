@@ -84,6 +84,11 @@ class ManualStrategy(object):
         signal_values = [1, -1]
         signals = pd.DataFrame({'result': np.select(signals_cond, signal_values, default=0)}, index=bbp.index)
 
+        # Based on indicators on T day, we will place orders on T+1 day
+        signals = signals.shift(1)
+        signals = signals.fillna(0)
+        signals.drop(signals.index[-1])
+
         # Generate trades
         net_position = 0
         manual_trades = pd.DataFrame(0, index=bbp.index, columns=[symbol])
