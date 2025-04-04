@@ -121,6 +121,15 @@ class StrategyLearner(object):
         dr.iloc[0] = 0
         return dr
 
+    def get_reward(self, action, date, price, dr, net_position, symbol):
+        yesterday_price = price.shift(1)
+        if action == 0: # do nothing
+            return net_position * dr.loc[date, symbol]
+        elif action == 1: # buy
+            return -(self.impact + self.commission/price.loc[date, symbol])
+        elif action == 2: # sell
+            return -(self.impact + self.commission/price.loc[date, symbol])
+
     # this method should create a QLearner, and train it for trading
     def add_evidence(  		  	   		 	 	 			  		 			     			  	 
         self,  		  	   		 	 	 			  		 			     			  	 
@@ -152,11 +161,11 @@ class StrategyLearner(object):
         action = self.learner.querysetstate(state)
         net_position = self.update_pos(0, action)
         scores = []
-        for count in range(0, 10000):
+        for count in range(0, 1000):
             scores.append(0)
             for date in price.index.tolist()[1:]:
-                reward = int(dr.loc[date, symbol]*net_position) # Accommodate for reward & commission
-                scores[-1] += reward
+                reward = self.get_reward(action, date, price, dr, net_position, symbol) # Accommodate for reward & commission
+                scores[-1] = scores[-1]*(1+reward)
                 state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd_crossover.loc[date][0]))
                 action = self.learner.query(state, reward)
                 net_position = self.update_pos(net_position, action)
