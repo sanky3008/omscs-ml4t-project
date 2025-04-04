@@ -52,10 +52,10 @@ def compute_portvals(
             day_order = orders.loc[date, symbol]
             if day_order > 0:
                 obligation.loc[date, symbol] += np.abs(day_order)
-                obligation.loc[date, 'CASH'] -= day_order*(prices.loc[date,symbol]*(1+impact) + commission)
+                obligation.loc[date, 'CASH'] -= day_order*(prices.loc[date,symbol]*(1+impact)) + commission
             elif day_order < 0:
                 obligation.loc[date, symbol] -= np.abs(day_order)
-                obligation.loc[date, 'CASH'] += np.abs(day_order) * (prices.loc[date, symbol] * (1 - impact) - commission)
+                obligation.loc[date, 'CASH'] += np.abs(day_order) * (prices.loc[date, symbol] * (1 - impact)) - commission
 
         if holdings.shift(1).loc[date].isnull().values.any():
             pass

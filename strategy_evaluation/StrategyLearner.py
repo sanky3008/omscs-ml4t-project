@@ -106,31 +106,51 @@ class StrategyLearner(object):
 
         return prices[symbol]
 
-    # update position based on action
-    def update_pos(self, pos, action):
-        if action == 0:
-            return pos
-        elif action == 1:
-            return 1000
-        elif action == 2:
-            return -1000
-
     # compute daily returns
     def get_dr(self, price):
         dr = (price / price.shift(1)) - 1
         dr.iloc[0] = 0
         return dr
 
-    def get_reward(self, action, date, price, dr, net_position, symbol):
+    def get_reward(self, action, date, price, holdings):
         yesterday_price = price.shift(1)
-        # if action == 0: # do nothing
-        reward = net_position * dr.loc[date, symbol]
-        if action == 1: # buy
-            reward -= (self.impact + self.commission/price.loc[date, symbol])
-        elif action == 2: # sell
-            reward -= (self.impact + self.commission/price.loc[date, symbol])
 
-        return reward
+        # print("\ntoday's date:    ", date)
+        # print("\nYday's price:    ", yesterday_price.loc[date].iloc[0])
+        # print("\nToday's price:   ", price.loc[date].iloc[0])
+        # print("\nHoldings before: ", holdings)
+        # print("\nAction:          ", action)
+
+        if action == 1 and holdings[0] != 1000: # buy
+            trade = 1000 - holdings[0]
+            cash_req = trade * (price.loc[date]*(1 + self.impact)) + self.commission
+            # print("\nCash Req: ", cash_req)
+            today_pv = 1000 * price.loc[date] + (holdings[1] - cash_req)
+            yesterday_pv = holdings[0] * yesterday_price.loc[date] + holdings[1]
+            reward = today_pv/yesterday_pv - 1
+            holdings[0] = 1000
+            holdings[1] = holdings[1] - cash_req
+
+        elif action == 2 and holdings[0] != -1000: #sell
+            trade = -1000 - holdings[0]
+            cash_got = -trade * (price.loc[date]*(1 - self.impact)) - self.commission
+            # print("\nCash Got: ", cash_got)
+            today_pv = -1000 * price.loc[date] + (holdings[1] + cash_got)
+            yesterday_pv = holdings[0] * yesterday_price.loc[date] + holdings[1]
+            reward = today_pv / yesterday_pv - 1
+            holdings[0] = -1000
+            holdings[1] = holdings[1] + cash_got
+
+        else:
+            today_pv = holdings[0] * price.loc[date] + holdings[1]
+            yesterday_pv = holdings[0] * yesterday_price.loc[date] + holdings[1]
+            reward = today_pv / yesterday_pv - 1
+
+        # print("\nHoldings after: ", holdings)
+        # print("\nReward:         ", reward.iloc[0])
+        # print("\n--------------------------------")
+
+        return reward, holdings
 
     # this method should create a QLearner, and train it for trading
     def add_evidence(  		  	   		 	 	 			  		 			     			  	 
@@ -156,30 +176,38 @@ class StrategyLearner(object):
         # add your code to do learning here
         bbp, rsi, macd_crossover = self.get_indicators(symbol, sd, ed)
         price = self.get_price([symbol], sd, ed)
-        dr = self.get_dr(price)
-        signals = pd.DataFrame(0, index=price.index, columns=["signal"])
-
-        state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd_crossover.iloc[0][0]))
-        action = self.learner.querysetstate(state)
-        net_position = self.update_pos(0, action)
         scores = []
-        for count in range(0, 1000):
-            scores.append(0)
+        for count in range(0, 100):
+            holdings = np.zeros(2)
+            holdings[1] = sv
+            state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd_crossover.iloc[0][0]))
+            action = self.learner.querysetstate(state)
+            signals = pd.DataFrame(0, index=price.index, columns=[symbol])
+            signals.iloc[0] = action
+            portvals = pd.DataFrame(0, index=price.index, columns=["portvals"])
+
             for date in price.index.tolist()[1:]:
-                reward = self.get_reward(action, date, price, dr, net_position, symbol) # Accommodate for reward & commission
-                scores[-1] = scores[-1]*(1+reward)
+                signals.loc[date, symbol] = action
+                reward, holdings = self.get_reward(action, date, price, holdings) # Accommodate for reward & commission
+                reward = reward.loc[symbol]
+
                 state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd_crossover.loc[date][0]))
                 action = self.learner.query(state, reward)
-                net_position = self.update_pos(net_position, action)
-                signals.loc[date, symbol] = action
+                portvals.loc[date].iloc[0] = holdings[0] * price.loc[date] + holdings[1]
 
+            trades = self.get_trades(signals, symbol)
+            pv_ms = compute_portvals(orders_df=trades, start_val=sv, commission=self.commission, impact=self.impact)
+            scores.append(compute_stats(pv_ms)[0])
             print("\nEPOCH: ", count)
-            print("\nReward: ", scores[-1])
-            print("\nScores & Count: ", scores, count)
+            print("\nCustom Cum Ret: ", ((holdings[0] * price.loc[ed] + holdings[1]) / sv - 1) * 100)
+            print("\nCum Ret as Marketsim: ", scores[-1])
+            print("\nLast 3 Scores & Count: ", scores[-3:], count)
+            print("\nrar: ", self.learner.rar)
             print("\n")
 
-            if len(scores) >= 3 and (abs(scores[-2]/scores[-1] - 1) <= 0.01) and (abs(scores[-3]/scores[-2] - 1) <= 0.01):
-                break
+            if len(scores) >= 3 and (abs(scores[-2]/scores[-1] - 1) <= 0.001) and (abs(scores[-3]/scores[-2] - 1) <= 0.001):
+                return trades
+                # break
 
         return
   		  	   		 	 	 			  		 			     			  	 
@@ -228,18 +256,15 @@ class StrategyLearner(object):
         """
         bbp, rsi, macd_crossover = self.get_indicators(symbol, sd, ed)
         price = self.get_price([symbol], sd, ed)
-        dr = self.get_dr(price)
-        signals = pd.DataFrame(0, index=price.index, columns=[symbol])
-
         state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd_crossover.iloc[0][0]))
         action = self.learner.querysetstate(state)
-        net_position = self.update_pos(0, action)
+        signals = pd.DataFrame(0, index=price.index, columns=[symbol])
+        signals.iloc[0] = action
+
         for date in price.index.tolist()[1:]:
-            reward = int(dr.loc[date, symbol] * net_position)
-            state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd_crossover.loc[date][0]))
-            action = self.learner.query(state, reward)
-            net_position = self.update_pos(net_position, action)
             signals.loc[date, symbol] = action
+            state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd_crossover.loc[date][0]))
+            action = self.learner.querysetstate(state)
 
         print(signals)
         return self.get_trades(signals, symbol)

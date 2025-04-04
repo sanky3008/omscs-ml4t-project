@@ -23,16 +23,16 @@ if __name__ == "__main__":
     out_sample_sd = dt.datetime(2010, 1, 1)
     out_sample_ed = dt.datetime(2011, 12, 31)
     sv = 100000
-    commission = 0
-    impact = 0
+    commission = 9.95
+    impact = 0.005
 
     manualstrategy = ManualStrategy()
     strategylearner = StrategyLearner(impact=impact, commission=commission)
     # trades = manualstrategy.testpolicy(symbol="JPM", sd=in_sample_sd, ed=in_sample_ed)
-    strategylearner.add_evidence(symbol="JPM", sd=in_sample_sd, ed=in_sample_ed)
-    trades = strategylearner.testPolicy(symbol="JPM", sd=in_sample_sd, ed=in_sample_ed)
+    tt = strategylearner.add_evidence(symbol="JPM", sd=in_sample_sd, ed=in_sample_ed, sv=sv)
+    trades = strategylearner.testPolicy(symbol="JPM", sd=in_sample_sd, ed=in_sample_ed, sv=sv)
 
-    print(trades)
+    print(trades.equals(tt))
 
     portvals = compute_portvals(trades, start_val=sv, commission=commission, impact=impact)
 
