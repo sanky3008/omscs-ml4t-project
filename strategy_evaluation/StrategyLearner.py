@@ -123,12 +123,14 @@ class StrategyLearner(object):
 
     def get_reward(self, action, date, price, dr, net_position, symbol):
         yesterday_price = price.shift(1)
-        if action == 0: # do nothing
-            return net_position * dr.loc[date, symbol]
-        elif action == 1: # buy
-            return -(self.impact + self.commission/price.loc[date, symbol])
+        # if action == 0: # do nothing
+        reward = net_position * dr.loc[date, symbol]
+        if action == 1: # buy
+            reward -= (self.impact + self.commission/price.loc[date, symbol])
         elif action == 2: # sell
-            return -(self.impact + self.commission/price.loc[date, symbol])
+            reward -= (self.impact + self.commission/price.loc[date, symbol])
+
+        return reward
 
     # this method should create a QLearner, and train it for trading
     def add_evidence(  		  	   		 	 	 			  		 			     			  	 

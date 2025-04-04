@@ -23,8 +23,8 @@ if __name__ == "__main__":
     out_sample_sd = dt.datetime(2010, 1, 1)
     out_sample_ed = dt.datetime(2011, 12, 31)
     sv = 100000
-    commission = 9.95
-    impact = 0.005
+    commission = 0
+    impact = 0
 
     manualstrategy = ManualStrategy()
     strategylearner = StrategyLearner(impact=impact, commission=commission)
