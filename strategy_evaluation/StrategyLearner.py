@@ -61,22 +61,43 @@ class StrategyLearner(object):
         self.commission = commission
         self.epochs = 500
         self.learner = ql.QLearner(
-            num_states=332,
+            num_states=27,
             num_actions=3, # 0 -> do nothing, 1 -> buy, 2 -> sell
-            alpha=0.2,
+            alpha=0.05,
             gamma=0.9,
             rar=0.5,
-            radr=0.99,
+            radr=0.9999,
             dyna=0,
             verbose=False,
         )
 
     # this method gives a single state for given indicators
-    def discretize(self, bbp, rsi, macd_crossover):
-        dbbp = min(bbp, 99) // 10
-        drsi = min(rsi, 99) // 10
+    def discretize(self, bbp, rsi, macd):
+        dbbp = min(bbp, 99) // 34
+        drsi = min(rsi, 99) // 34
 
-        return dbbp * 10 * 3 + drsi * 3 + macd_crossover
+        # dbbp = 0
+        # if bbp <= 0:
+        #     dbbp = 1
+        # elif bbp >= 100:
+        #     dbbp = 2
+        #
+        # drsi = 0
+        # if rsi <= 30:
+        #     drsi = 1
+        # elif rsi >= 70:
+        #     drsi = 2
+
+        if macd <= -1:
+            dmacd = 0
+        elif macd <= 0 and macd > -1:
+            dmacd = 1
+        elif macd <= 1 and macd > 0:
+            dmacd = 2
+        else:
+            dmacd = 3
+
+        return dbbp * 3 * 3 + drsi * 3 + dmacd
 
     # this method fetch price data and generates states
     def get_indicators(self, symbol, sd, ed):
@@ -98,7 +119,7 @@ class StrategyLearner(object):
         macd_crossover = pd.DataFrame({'result': np.select(conditions, values, default=0)}, index=macd.index,
                                       columns=["result"])
 
-        return bbp, rsi, macd_crossover
+        return bbp, rsi, macd
 
     # this method will get the price data for the given symbol
     def get_price(self, symbol, sd, ed):
@@ -177,10 +198,11 @@ class StrategyLearner(object):
         bbp, rsi, macd_crossover = self.get_indicators(symbol, sd, ed)
         price = self.get_price([symbol], sd, ed)
         scores = []
-        for count in range(0, 100):
+        for count in range(0, self.epochs):
             holdings = np.zeros(2)
             holdings[1] = sv
-            state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd_crossover.iloc[0][0]))
+            # state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd_crossover.iloc[0][0]))
+            state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd_crossover.iloc[0]))
             action = self.learner.querysetstate(state)
             signals = pd.DataFrame(0, index=price.index, columns=[symbol])
             signals.iloc[0] = action
@@ -191,7 +213,8 @@ class StrategyLearner(object):
                 reward, holdings = self.get_reward(action, date, price, holdings) # Accommodate for reward & commission
                 reward = reward.loc[symbol]
 
-                state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd_crossover.loc[date][0]))
+                # state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd_crossover.loc[date][0]))
+                state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd_crossover.loc[date]))
                 action = self.learner.query(state, reward)
                 portvals.loc[date].iloc[0] = holdings[0] * price.loc[date] + holdings[1]
 
@@ -206,8 +229,7 @@ class StrategyLearner(object):
             print("\n")
 
             if len(scores) >= 3 and (abs(scores[-2]/scores[-1] - 1) <= 0.001) and (abs(scores[-3]/scores[-2] - 1) <= 0.001):
-                return trades
-                # break
+                break
 
         return
   		  	   		 	 	 			  		 			     			  	 
@@ -254,16 +276,19 @@ class StrategyLearner(object):
             long so long as net holdings are constrained to -1000, 0, and 1000.  		  	   		 	 	 			  		 			     			  	 
         :rtype: pandas.DataFrame  		  	   		 	 	 			  		 			     			  	 
         """
+        print("Q-table coverage: ", (self.learner.q == 0).sum().sum()/self.learner.q.size)
         bbp, rsi, macd_crossover = self.get_indicators(symbol, sd, ed)
         price = self.get_price([symbol], sd, ed)
-        state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd_crossover.iloc[0][0]))
+        # state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd_crossover.iloc[0][0]))
+        state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd_crossover.iloc[0]))
         action = self.learner.querysetstate(state)
         signals = pd.DataFrame(0, index=price.index, columns=[symbol])
         signals.iloc[0] = action
 
         for date in price.index.tolist()[1:]:
             signals.loc[date, symbol] = action
-            state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd_crossover.loc[date][0]))
+            # state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd_crossover.loc[date][0]))
+            state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd_crossover.loc[date]))
             action = self.learner.querysetstate(state)
 
         print(signals)

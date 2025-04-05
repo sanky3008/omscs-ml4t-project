@@ -95,7 +95,7 @@ class ManualStrategy(object):
 
         for date in signals.index:
             if signals.loc[date].iloc[0] == 1:
-                manual_trades.loc[date, "signal"] = 1000 - net_position
+                manual_trades.loc[date] = 1000 - net_position
             elif signals.loc[date].iloc[0] == -1:
                 manual_trades.loc[date] = -1000 - net_position
 
