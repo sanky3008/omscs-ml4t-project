@@ -61,7 +61,7 @@ class StrategyLearner(object):
         self.commission = commission
         self.epochs = 500
         self.learner = ql.QLearner(
-            num_states=27,
+            num_states=40,
             num_actions=3, # 0 -> do nothing, 1 -> buy, 2 -> sell
             alpha=0.05,
             gamma=0.9,
@@ -70,6 +70,7 @@ class StrategyLearner(object):
             dyna=0,
             verbose=False,
         )
+        self.statespace = np.zeros(40)
 
     # this method gives a single state for given indicators
     def discretize(self, bbp, rsi, macd):
@@ -88,16 +89,17 @@ class StrategyLearner(object):
         # elif rsi >= 70:
         #     drsi = 2
 
+        print
         if macd <= -1:
             dmacd = 0
-        elif macd <= 0 and macd > -1:
+        elif macd <= -0.1 and macd > -1:
             dmacd = 1
-        elif macd <= 1 and macd > 0:
+        elif macd <= 0.1 and macd > -0.1:
             dmacd = 2
         else:
             dmacd = 3
 
-        return dbbp * 3 * 3 + drsi * 3 + dmacd
+        return dbbp * 3 * 4 + drsi * 4 + dmacd
 
     # this method fetch price data and generates states
     def get_indicators(self, symbol, sd, ed):
@@ -203,6 +205,7 @@ class StrategyLearner(object):
             holdings[1] = sv
             # state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd_crossover.iloc[0][0]))
             state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd_crossover.iloc[0]))
+            self.statespace[state] += 1
             action = self.learner.querysetstate(state)
             signals = pd.DataFrame(0, index=price.index, columns=[symbol])
             signals.iloc[0] = action
@@ -215,6 +218,7 @@ class StrategyLearner(object):
 
                 # state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd_crossover.loc[date][0]))
                 state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd_crossover.loc[date]))
+                self.statespace[state] += 1
                 action = self.learner.query(state, reward)
                 portvals.loc[date].iloc[0] = holdings[0] * price.loc[date] + holdings[1]
 

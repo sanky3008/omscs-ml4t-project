@@ -18,8 +18,8 @@ def study_group():
     return "sphadnis9"
 
 if __name__ == "__main__":
-    rand.seed(904081199)
-    np.random.seed(904081199)
+    # rand.seed(904081199)
+    # np.random.seed(904081199)
 
     symbol = "JPM"
     in_sample_sd = dt.datetime(2008, 1, 1)
@@ -54,9 +54,6 @@ if __name__ == "__main__":
     ax.plot(b_pv, label="Benchmark")
     ax.legend()
     plt.show()
-
-
-
 
 
 
