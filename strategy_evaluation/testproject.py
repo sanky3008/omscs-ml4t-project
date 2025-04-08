@@ -21,7 +21,7 @@ if __name__ == "__main__":
     # rand.seed(904081199)
     # np.random.seed(904081199)
 
-    symbol = "JPM"
+    symbol = "ML4T-220"
     in_sample_sd = dt.datetime(2008, 1, 1)
     in_sample_ed = dt.datetime(2009, 12, 31)
     out_sample_sd = dt.datetime(2010, 1, 1)
@@ -33,7 +33,7 @@ if __name__ == "__main__":
     manualstrategy = ManualStrategy()
     strategylearner = StrategyLearner(impact=impact, commission=commission)
 
-    m_trades = manualstrategy.testpolicy(symbol=symbol, sd=out_sample_sd, ed=out_sample_ed)
+    m_trades = manualstrategy.testPolicy(symbol=symbol, sd=out_sample_sd, ed=out_sample_ed, sv=sv)
 
     strategylearner.add_evidence(symbol=symbol, sd=in_sample_sd, ed=in_sample_ed, sv=sv)
     s_trades = strategylearner.testPolicy(symbol=symbol, sd=out_sample_sd, ed=out_sample_ed, sv=sv)
@@ -45,7 +45,18 @@ if __name__ == "__main__":
     s_pv = compute_portvals(s_trades, start_val=sv, commission=commission, impact=impact)
     b_pv = compute_portvals(b_trades, start_val=sv, commission=commission, impact=impact)
 
+    print("\n\nOut of Sample:")
     print(compute_stats(s_pv))
+    print("\n")
+    print(strategylearner.statespace)
+
+    print("\n\nIn-sample:")
+    m_is = manualstrategy.testPolicy(symbol=symbol, sd=in_sample_sd, ed=in_sample_ed, sv=sv)
+    s_is = strategylearner.testPolicy(symbol=symbol, sd=in_sample_sd, ed=in_sample_ed, sv=sv)
+    # print(s_is)
+    print("\nManual: ", compute_stats(compute_portvals(m_is, start_val=sv, commission=commission, impact=impact)))
+    print("\nStrategy: ", compute_stats(compute_portvals(s_is, start_val=sv, commission=commission, impact=impact)))
+    print("\nBenchmark: ", compute_stats(compute_portvals(b_trades, start_val=sv, commission=commission, impact=impact)))
 
     fig = plt.figure()
     ax = fig.add_subplot()

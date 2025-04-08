@@ -29,7 +29,7 @@ class ManualStrategy(object):
     ):
         pass
 
-    def testpolicy(
+    def testPolicy(
             self,
             symbol='IBM',
             sd = dt.datetime(2008, 1, 1, 0, 0),
@@ -64,6 +64,7 @@ class ManualStrategy(object):
         bbp = indicator.get_bbp(window = 20)
         rsi = indicator.get_rsi(window = 14)
         macd = indicator.get_macd().loc[sd:] # My version of indicators.py is also returning values 9 market days prior to sd
+        ppo = indicator.get_ppo()
 
         # Calculate MACD crossover
         macd_prev = macd.shift(1)
@@ -81,6 +82,10 @@ class ManualStrategy(object):
             ((bbp <= 0) & (rsi <= 30)) | ((bbp <= 0) & (macd_crossover["result"] == 1)) | ((rsi <= 30) & (macd_crossover["result"] == 1)),
             ((bbp >= 100) & (rsi >= 70)) | ((bbp >= 100) & (macd_crossover["result"] == 1)) | ((rsi >= 70) & (macd_crossover["result"] == 1))
         ]
+        # signals_cond = [
+        #     ((bbp <= 0) & (rsi <= 30)) | ((bbp <= 0) & (ppo > 3)) | ((rsi <= 30) & (ppo > 3)),
+        #     ((bbp >= 100) & (rsi >= 70)) | ((bbp >= 100) & (ppo < 3)) | ((rsi >= 70) & (ppo < 3))
+        # ]
         signal_values = [1, -1]
         signals = pd.DataFrame({'result': np.select(signals_cond, signal_values, default=0)}, index=bbp.index)
 

@@ -61,35 +61,41 @@ class StrategyLearner(object):
         self.commission = commission
         self.epochs = 500
         self.learner = ql.QLearner(
-            num_states=40,
+            num_states=29,
             num_actions=3, # 0 -> do nothing, 1 -> buy, 2 -> sell
-            alpha=0.05,
+            alpha=0.2,
             gamma=0.9,
-            rar=0.5,
-            radr=0.9999,
+            rar=0.9,
+            radr=0.99,
             dyna=0,
             verbose=False,
         )
         self.statespace = np.zeros(40)
+        self.add_evidence_trades = 0
 
     # this method gives a single state for given indicators
     def discretize(self, bbp, rsi, macd):
-        dbbp = min(bbp, 99) // 34
-        drsi = min(rsi, 99) // 34
+        # dbbp = min(bbp, 99) // 34
+        # drsi = min(rsi, 99) // 34
 
-        # dbbp = 0
-        # if bbp <= 0:
-        #     dbbp = 1
-        # elif bbp >= 100:
-        #     dbbp = 2
-        #
-        # drsi = 0
-        # if rsi <= 30:
-        #     drsi = 1
-        # elif rsi >= 70:
-        #     drsi = 2
+        dbbp = 1
+        if bbp <= 20:
+            dbbp = 0
+        elif bbp >= 80:
+            dbbp = 2
 
-        print
+        # droc = 1
+        # if droc < -5:
+        #     droc = 0
+        # elif droc > 5:
+        #     droc = 1
+
+        drsi = 1
+        if rsi <= 40:
+            drsi = 0
+        elif rsi >= 60:
+            drsi = 2
+
         if macd <= -1:
             dmacd = 0
         elif macd <= -0.1 and macd > -1:
@@ -99,7 +105,13 @@ class StrategyLearner(object):
         else:
             dmacd = 3
 
-        return dbbp * 3 * 4 + drsi * 4 + dmacd
+        # dppo = 0
+        # if ppo < -3:
+        #     dppo = 1
+        # elif ppo > 3:
+        #     dppo = 1
+
+        return dbbp * 3 * 3 + drsi * 3 + dmacd
 
     # this method fetch price data and generates states
     def get_indicators(self, symbol, sd, ed):
@@ -107,6 +119,8 @@ class StrategyLearner(object):
         bbp = indicator.get_bbp(window=20)
         rsi = indicator.get_rsi(window=14)
         macd = indicator.get_macd().loc[sd:]  # My version of indicators.py is also returning values 9 market days prior to sd
+        ppo = indicator.get_ppo()
+        roc = indicator.get_roc(14)
 
         # Calculate MACD crossover
         macd_prev = macd.shift(1)
@@ -197,14 +211,15 @@ class StrategyLearner(object):
         """
 
         # add your code to do learning here
-        bbp, rsi, macd_crossover = self.get_indicators(symbol, sd, ed)
+        # bbp, rsi, macd_crossover = self.get_indicators(symbol, sd, ed)
+        bbp, rsi, macd = self.get_indicators(symbol, sd, ed)
         price = self.get_price([symbol], sd, ed)
         scores = []
         for count in range(0, self.epochs):
             holdings = np.zeros(2)
             holdings[1] = sv
             # state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd_crossover.iloc[0][0]))
-            state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd_crossover.iloc[0]))
+            state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd.iloc[0]))
             self.statespace[state] += 1
             action = self.learner.querysetstate(state)
             signals = pd.DataFrame(0, index=price.index, columns=[symbol])
@@ -217,7 +232,7 @@ class StrategyLearner(object):
                 reward = reward.loc[symbol]
 
                 # state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd_crossover.loc[date][0]))
-                state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd_crossover.loc[date]))
+                state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd.loc[date]))
                 self.statespace[state] += 1
                 action = self.learner.query(state, reward)
                 portvals.loc[date].iloc[0] = holdings[0] * price.loc[date] + holdings[1]
@@ -232,7 +247,8 @@ class StrategyLearner(object):
             print("\nrar: ", self.learner.rar)
             print("\n")
 
-            if len(scores) >= 3 and (abs(scores[-2]/scores[-1] - 1) <= 0.001) and (abs(scores[-3]/scores[-2] - 1) <= 0.001):
+            if len(scores) >= 3 and (abs(scores[-2]/scores[-1] - 1) <= 0.0001) and (abs(scores[-3]/scores[-2] - 1) <= 0.0001):
+                self.add_evidence_trades = trades
                 break
 
         return
@@ -281,10 +297,11 @@ class StrategyLearner(object):
         :rtype: pandas.DataFrame  		  	   		 	 	 			  		 			     			  	 
         """
         print("Q-table coverage: ", (self.learner.q == 0).sum().sum()/self.learner.q.size)
-        bbp, rsi, macd_crossover = self.get_indicators(symbol, sd, ed)
+        # bbp, rsi, macd_crossover = self.get_indicators(symbol, sd, ed)
+        bbp, rsi, macd = self.get_indicators(symbol, sd, ed)
         price = self.get_price([symbol], sd, ed)
         # state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd_crossover.iloc[0][0]))
-        state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd_crossover.iloc[0]))
+        state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd.iloc[0]))
         action = self.learner.querysetstate(state)
         signals = pd.DataFrame(0, index=price.index, columns=[symbol])
         signals.iloc[0] = action
@@ -292,7 +309,7 @@ class StrategyLearner(object):
         for date in price.index.tolist()[1:]:
             signals.loc[date, symbol] = action
             # state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd_crossover.loc[date][0]))
-            state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd_crossover.loc[date]))
+            state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd.loc[date]))
             action = self.learner.querysetstate(state)
 
         print(signals)
