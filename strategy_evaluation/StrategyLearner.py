@@ -63,10 +63,10 @@ class StrategyLearner(object):
         self.learner = ql.QLearner(
             num_states=27,
             num_actions=3, # 0 -> do nothing, 1 -> buy, 2 -> sell
-            alpha=0.01,
-            gamma=0.9999,
-            rar=0.5,
-            radr=0.99,
+            alpha=0.02,
+            gamma=0.99,
+            rar=0.9, #prev: 0.5
+            radr=0.99, #prev: 0.999
             dyna=0,
             verbose=False,
         )
@@ -75,20 +75,20 @@ class StrategyLearner(object):
 
     # this method gives a single state for given indicators
     def discretize(self, bbp, rsi, ppo):
-        dbbp = min(bbp, 99) // 34
-        drsi = min(rsi, 99) // 34
+        # dbbp = min(bbp, 99) // 34
+        # drsi = min(rsi, 99) // 34
 
-        # dbbp = 1
-        # if bbp <= 20:
-        #     dbbp = 0
-        # elif bbp >= 80:
-        #     dbbp = 2
-        #
-        # drsi = 1
-        # if rsi <= 40:
-        #     drsi = 0
-        # elif rsi >= 60:
-        #     drsi = 2
+        dbbp = 1
+        if bbp <= 20:
+            dbbp = 0
+        elif bbp >= 80:
+            dbbp = 2
+
+        drsi = 1
+        if rsi <= 40:
+            drsi = 0
+        elif rsi >= 60:
+            drsi = 2
 
         dppo = 0
         if ppo < -1:
@@ -112,12 +112,6 @@ class StrategyLearner(object):
         prices = get_data(symbol, pd.date_range(sd, ed))
 
         return prices[symbol]
-
-    # compute daily returns
-    def get_dr(self, price):
-        dr = (price / price.shift(1)) - 1
-        dr.iloc[0] = 0
-        return dr
 
     def get_reward(self, action, date, price, holdings):
         yesterday_price = price.shift(1)
@@ -188,7 +182,6 @@ class StrategyLearner(object):
                 if bbp.loc[date] >= 80:
                     pass
 
-                # state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd_crossover.loc[date][0]))
                 state = int(self.discretize(bbp.loc[date], rsi.loc[date], ppo.loc[date]))
                 self.statespace[state] += 1
                 action = self.learner.query(state, reward)
@@ -223,9 +216,6 @@ class StrategyLearner(object):
                 trades.loc[date] = -1000 - net_position
 
             net_position += trades.loc[pd.to_datetime(date), symbol]
-
-        if self.verbose:
-            print("Trade File\n", trades)
 
         return trades
 

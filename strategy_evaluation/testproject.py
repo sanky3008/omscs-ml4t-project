@@ -21,18 +21,20 @@ def study_group():
 if __name__ == "__main__":
     # rand.seed(904081199)
     # np.random.seed(904081199)
-
-    symbol = "ML4T-220"
+    #
+    symbol = "AAPL"
     in_sample_sd = dt.datetime(2008, 1, 1)
     in_sample_ed = dt.datetime(2009, 12, 31)
     out_sample_sd = dt.datetime(2010, 1, 1)
     out_sample_ed = dt.datetime(2011, 12, 31)
     sv = 100000
+    # commission = 9.95
+    # impact = 0.005
     commission = 9.95
     impact = 0.005
-
+    #
     # manualstrategy = ManualStrategy()
-    # strategylearner = StrategyLearner(impact=impact, commission=commission, verbose=True)
+    # strategylearner = StrategyLearner(impact=impact, commission=commission, verbose=False)
     #
     # m_trades = manualstrategy.testPolicy(symbol=symbol, sd=out_sample_sd, ed=out_sample_ed, sv=sv)
     #
@@ -67,16 +69,19 @@ if __name__ == "__main__":
     # ax.legend()
     # plt.show()
 
-    for i in range(0, 10):
-        # rand.seed(904081199)
-        # np.random.seed(904081199)
+    for symbol in ["ML4T-220", "AAPL", "SINE_FAST_NOISE", "UNH", "GNW", "SINE_SLOW_NOISE", "SNV"]:
+        rand.seed(904081199)
+        np.random.seed(904081199)
         strategylearner = StrategyLearner(impact=impact, commission=commission, verbose=False)
         st = time.time()
         strategylearner.add_evidence(symbol=symbol, sd=in_sample_sd, ed=in_sample_ed, sv=sv)
         et = time.time()
         is_trades = strategylearner.testPolicy(symbol=symbol, sd=in_sample_sd, ed=in_sample_ed, sv=sv)
         os_trades = strategylearner.testPolicy(symbol=symbol, sd=out_sample_sd, ed=out_sample_ed, sv=sv)
+        b_trades = pd.DataFrame(0, index=is_trades.index, columns=[symbol])
+        b_trades.iloc[0] = 1000
+        b_pv = compute_portvals(b_trades, start_val=sv, commission=commission, impact=impact)
         is_pv = compute_portvals(is_trades, start_val=sv, commission=commission, impact=impact)
         os_pv = compute_portvals(os_trades, start_val=sv, commission=commission, impact=impact)
-        print(compute_stats(is_pv)[0], compute_stats(os_pv)[0], et-st)
+        print(symbol, compute_stats(is_pv)[0]*100, compute_stats(os_pv)[0]*100, compute_stats(b_pv)[0]*100, et-st)
 
