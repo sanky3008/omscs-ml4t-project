@@ -63,10 +63,10 @@ class StrategyLearner(object):
         self.learner = ql.QLearner(
             num_states=27,
             num_actions=3, # 0 -> do nothing, 1 -> buy, 2 -> sell
-            alpha=0.2,
+            alpha=0.005,
             gamma=0.9,
             rar=0.5,
-            radr=0.999,
+            radr=0.99,
             dyna=0,
             verbose=False,
         )
@@ -122,11 +122,11 @@ class StrategyLearner(object):
     def get_reward(self, action, date, price, holdings):
         yesterday_price = price.shift(1)
 
-        print("\ntoday's date:    ", date)
-        print("\nYday's price:    ", yesterday_price.loc[date].iloc[0])
-        print("\nToday's price:   ", price.loc[date].iloc[0])
-        print("\nHoldings before: ", holdings)
-        print("\nAction:          ", action)
+        # print("\ntoday's date:    ", date)
+        # print("\nYday's price:    ", yesterday_price.loc[date].iloc[0])
+        # print("\nToday's price:   ", price.loc[date].iloc[0])
+        # print("\nHoldings before: ", holdings)
+        # print("\nAction:          ", action)
 
         if action == 1 and holdings[0] != 1000: # buy
             trade = 1000 - holdings[0]
@@ -134,7 +134,7 @@ class StrategyLearner(object):
             # print("\nCash Req: ", cash_req)
             today_pv = 1000 * price.loc[date] + (holdings[1] - cash_req)
             yesterday_pv = holdings[0] * yesterday_price.loc[date] + holdings[1]
-            reward = (today_pv - yesterday_pv)/abs(yesterday_pv)
+            reward = (today_pv - yesterday_pv)*100/abs(yesterday_pv)
             holdings[0] = 1000
             holdings[1] = holdings[1] - cash_req
 
@@ -144,14 +144,14 @@ class StrategyLearner(object):
             # print("\nCash Got: ", cash_got)
             today_pv = -1000 * price.loc[date] + (holdings[1] + cash_got)
             yesterday_pv = holdings[0] * yesterday_price.loc[date] + holdings[1]
-            reward = (today_pv - yesterday_pv)/abs(yesterday_pv)
+            reward = (today_pv - yesterday_pv)*100/abs(yesterday_pv)
             holdings[0] = -1000
             holdings[1] = holdings[1] + cash_got
 
         else:
             today_pv = holdings[0] * price.loc[date] + holdings[1]
             yesterday_pv = holdings[0] * yesterday_price.loc[date] + holdings[1]
-            reward = (today_pv - yesterday_pv)/abs(yesterday_pv)
+            reward = (today_pv - yesterday_pv)*100/abs(yesterday_pv)
             """
             Earlier, I had kept reward = today_pv/yesterday_pv - 1
             However, this would not work for -ve values.
@@ -160,9 +160,9 @@ class StrategyLearner(object):
             Hence, I have changed this to: (today_pv - yesterday_pv)/abs(yesterday_pv), for (-2 - -3)/3 = 1/3 = 0.3333
             """
 
-        print("\nHoldings after: ", holdings)
-        print("\nReward:         ", reward.iloc[0])
-        print("\n--------------------------------")
+        # print("\nHoldings after: ", holdings)
+        # print("\nReward:         ", reward.iloc[0])
+        # print("\n--------------------------------")
 
         return reward, holdings
 
@@ -202,6 +202,7 @@ class StrategyLearner(object):
             signals = pd.DataFrame(0, index=price.index, columns=[symbol])
             signals.iloc[0] = action
             portvals = pd.DataFrame(0, index=price.index, columns=["portvals"])
+            scores.append(0)
 
             for date in price.index.tolist()[1:]:
                 signals.loc[date, symbol] = action
@@ -217,10 +218,11 @@ class StrategyLearner(object):
                 self.statespace[state] += 1
                 action = self.learner.query(state, reward)
                 portvals.loc[date].iloc[0] = holdings[0] * price.loc[date] + holdings[1]
+                scores[-1] += reward
 
             trades = self.get_trades(signals, symbol)
             pv_ms = compute_portvals(orders_df=trades, start_val=sv, commission=self.commission, impact=self.impact)
-            scores.append(compute_stats(pv_ms)[0])
+            # scores.append(compute_stats(pv_ms)[0])
 
             if self.verbose:
                 print("\nEPOCH: ", count)
@@ -230,7 +232,7 @@ class StrategyLearner(object):
                 print("\nrar: ", self.learner.rar)
                 print("\n")
 
-            if len(scores) >= 5 and (abs(scores[-2]/scores[-1] - 1) <= 0.0001) and (abs(scores[-3]/scores[-2] - 1) <= 0.0001):
+            if len(scores) >= 5 and (abs(scores[-2]/scores[-1] - 1) <= 0.000001) and (abs(scores[-3]/scores[-2] - 1) <= 0.000001):
                 self.add_evidence_trades = trades
                 break
 
@@ -279,7 +281,11 @@ class StrategyLearner(object):
             long so long as net holdings are constrained to -1000, 0, and 1000.  		  	   		 	 	 			  		 			     			  	 
         :rtype: pandas.DataFrame  		  	   		 	 	 			  		 			     			  	 
         """
-        print("q1-table coverage: ", (self.learner.q == 0).sum().sum()/self.learner.q.size)
+        # print("\nq1-table coverage: ", (self.learner.q == 0).sum().sum()/self.learner.q.size)
+        # print("\nmax: ", self.learner.q.max())
+        # print("\nmin: ", self.learner.q.min())
+        # print("\nmedian: ", np.median(self.learner.q))
+        # print("\nmean: ", self.learner.q.mean())
         # bbp, rsi, macd_crossover = self.get_indicators(symbol, sd, ed)
         bbp, rsi, ppo = self.get_indicators(symbol, sd, ed)
         price = self.get_price([symbol], sd, ed)
@@ -295,7 +301,7 @@ class StrategyLearner(object):
             state = int(self.discretize(bbp.loc[date], rsi.loc[date], ppo.loc[date]))
             action = self.learner.querysetstate(state)
 
-        print(signals)
+        # print(signals)
         return self.get_trades(signals, symbol)
 
   		  	   		 	 	 			  		 			     			  	 
