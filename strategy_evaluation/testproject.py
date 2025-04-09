@@ -31,7 +31,7 @@ if __name__ == "__main__":
     impact = 0.005
 
     manualstrategy = ManualStrategy()
-    strategylearner = StrategyLearner(impact=impact, commission=commission)
+    strategylearner = StrategyLearner(impact=impact, commission=commission, verbose=False)
 
     m_trades = manualstrategy.testPolicy(symbol=symbol, sd=out_sample_sd, ed=out_sample_ed, sv=sv)
 
