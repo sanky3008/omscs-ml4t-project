@@ -32,7 +32,7 @@ if __name__ == "__main__":
     impact = 0.005
 
     # manualstrategy = ManualStrategy()
-    # strategylearner = StrategyLearner(impact=impact, commission=commission, verbose=False)
+    # strategylearner = StrategyLearner(impact=impact, commission=commission, verbose=True)
     #
     # m_trades = manualstrategy.testPolicy(symbol=symbol, sd=out_sample_sd, ed=out_sample_ed, sv=sv)
     #
@@ -68,8 +68,8 @@ if __name__ == "__main__":
     # plt.show()
 
     for i in range(0, 10):
-        rand.seed(904081199)
-        np.random.seed(904081199)
+        # rand.seed(904081199)
+        # np.random.seed(904081199)
         strategylearner = StrategyLearner(impact=impact, commission=commission, verbose=False)
         st = time.time()
         strategylearner.add_evidence(symbol=symbol, sd=in_sample_sd, ed=in_sample_ed, sv=sv)

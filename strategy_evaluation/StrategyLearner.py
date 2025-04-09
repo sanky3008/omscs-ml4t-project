@@ -63,8 +63,8 @@ class StrategyLearner(object):
         self.learner = ql.QLearner(
             num_states=27,
             num_actions=3, # 0 -> do nothing, 1 -> buy, 2 -> sell
-            alpha=0.005,
-            gamma=0.9,
+            alpha=0.01,
+            gamma=0.9999,
             rar=0.5,
             radr=0.99,
             dyna=0,
@@ -122,47 +122,25 @@ class StrategyLearner(object):
     def get_reward(self, action, date, price, holdings):
         yesterday_price = price.shift(1)
 
-        # print("\ntoday's date:    ", date)
-        # print("\nYday's price:    ", yesterday_price.loc[date].iloc[0])
-        # print("\nToday's price:   ", price.loc[date].iloc[0])
-        # print("\nHoldings before: ", holdings)
-        # print("\nAction:          ", action)
+        costs = 0
+        if action != 0:
+            costs = self.impact + self.commission/price.loc[date]
 
-        if action == 1 and holdings[0] != 1000: # buy
-            trade = 1000 - holdings[0]
-            cash_req = trade * (price.loc[date]*(1 + self.impact)) + self.commission
-            # print("\nCash Req: ", cash_req)
-            today_pv = 1000 * price.loc[date] + (holdings[1] - cash_req)
-            yesterday_pv = holdings[0] * yesterday_price.loc[date] + holdings[1]
-            reward = (today_pv - yesterday_pv)*100/abs(yesterday_pv)
-            holdings[0] = 1000
-            holdings[1] = holdings[1] - cash_req
+        reward = holdings*(price.loc[date]/yesterday_price.loc[date] - 1) - costs
 
-        elif action == 2 and holdings[0] != -1000: #sell
-            trade = -1000 - holdings[0]
-            cash_got = -trade * (price.loc[date]*(1 - self.impact)) - self.commission
-            # print("\nCash Got: ", cash_got)
-            today_pv = -1000 * price.loc[date] + (holdings[1] + cash_got)
-            yesterday_pv = holdings[0] * yesterday_price.loc[date] + holdings[1]
-            reward = (today_pv - yesterday_pv)*100/abs(yesterday_pv)
-            holdings[0] = -1000
-            holdings[1] = holdings[1] + cash_got
+        # print("\ndate: ", date)
+        # print("yday's price: ", yesterday_price.loc[date].iloc[0])
+        # print("today's price: ", price.loc[date].iloc[0])
+        # print("action: ", action)
+        # print("holdings before: ", holdings)
+        # print("reward: ", reward.iloc[0])
 
-        else:
-            today_pv = holdings[0] * price.loc[date] + holdings[1]
-            yesterday_pv = holdings[0] * yesterday_price.loc[date] + holdings[1]
-            reward = (today_pv - yesterday_pv)*100/abs(yesterday_pv)
-            """
-            Earlier, I had kept reward = today_pv/yesterday_pv - 1
-            However, this would not work for -ve values.
-            For example, if a portfolio rises from -3 to -2, then reward as per the above formula will be -2/-3 - 1 = -0.333
-            This is wrong, for it should be +ve as the value increased.
-            Hence, I have changed this to: (today_pv - yesterday_pv)/abs(yesterday_pv), for (-2 - -3)/3 = 1/3 = 0.3333
-            """
+        if action == 1:
+            holdings = 1000
+        elif action == 2:
+            holdings = -1000
 
-        # print("\nHoldings after: ", holdings)
-        # print("\nReward:         ", reward.iloc[0])
-        # print("\n--------------------------------")
+        # print("holdings after: ", holdings)
 
         return reward, holdings
 
@@ -193,16 +171,13 @@ class StrategyLearner(object):
         price = self.get_price([symbol], sd, ed)
         scores = []
         for count in range(0, self.epochs):
-            holdings = np.zeros(2)
-            holdings[1] = sv
-            # state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd_crossover.iloc[0][0]))
+            holdings = 0
             state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], ppo.iloc[0]))
             self.statespace[state] += 1
             action = self.learner.querysetstate(state)
             signals = pd.DataFrame(0, index=price.index, columns=[symbol])
             signals.iloc[0] = action
-            portvals = pd.DataFrame(0, index=price.index, columns=["portvals"])
-            scores.append(0)
+            # portvals = pd.DataFrame(0, index=price.index, columns=["portvals"])
 
             for date in price.index.tolist()[1:]:
                 signals.loc[date, symbol] = action
@@ -217,16 +192,14 @@ class StrategyLearner(object):
                 state = int(self.discretize(bbp.loc[date], rsi.loc[date], ppo.loc[date]))
                 self.statespace[state] += 1
                 action = self.learner.query(state, reward)
-                portvals.loc[date].iloc[0] = holdings[0] * price.loc[date] + holdings[1]
-                scores[-1] += reward
+                # portvals.loc[date].iloc[0] = holdings * price.loc[date] + holdings[1]
 
             trades = self.get_trades(signals, symbol)
             pv_ms = compute_portvals(orders_df=trades, start_val=sv, commission=self.commission, impact=self.impact)
-            # scores.append(compute_stats(pv_ms)[0])
+            scores.append(compute_stats(pv_ms)[0])
 
             if self.verbose:
                 print("\nEPOCH: ", count)
-                print("\nCustom Cum Ret: ", ((holdings[0] * price.loc[ed] + holdings[1]) / sv - 1) * 100)
                 print("\nCum Ret in this EPOCH: ", scores[-1])
                 print("\nLast 3 Scores & Count: ", scores[-3:], count)
                 print("\nrar: ", self.learner.rar)
@@ -289,7 +262,6 @@ class StrategyLearner(object):
         # bbp, rsi, macd_crossover = self.get_indicators(symbol, sd, ed)
         bbp, rsi, ppo = self.get_indicators(symbol, sd, ed)
         price = self.get_price([symbol], sd, ed)
-        # state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], macd_crossover.iloc[0][0]))
         state = int(self.discretize(bbp.iloc[0], rsi.iloc[0], ppo.iloc[0]))
         action = self.learner.querysetstate(state)
         signals = pd.DataFrame(0, index=price.index, columns=[symbol])
@@ -297,7 +269,6 @@ class StrategyLearner(object):
 
         for date in price.index.tolist()[1:]:
             signals.loc[date, symbol] = action
-            # state = int(self.discretize(bbp.loc[date], rsi.loc[date], macd_crossover.loc[date][0]))
             state = int(self.discretize(bbp.loc[date], rsi.loc[date], ppo.loc[date]))
             action = self.learner.querysetstate(state)
 
