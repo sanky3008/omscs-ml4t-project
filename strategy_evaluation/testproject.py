@@ -28,10 +28,10 @@ if __name__ == "__main__":
     out_sample_sd = dt.datetime(2010, 1, 1)
     out_sample_ed = dt.datetime(2011, 12, 31)
     sv = 100000
+    commission = 0
+    impact = 0
     # commission = 9.95
     # impact = 0.005
-    commission = 9.95
-    impact = 0.005
     #
     # manualstrategy = ManualStrategy()
     # strategylearner = StrategyLearner(impact=impact, commission=commission, verbose=False)
@@ -70,8 +70,8 @@ if __name__ == "__main__":
     # plt.show()
 
     for symbol in ["ML4T-220", "AAPL", "SINE_FAST_NOISE", "UNH", "GNW", "SINE_SLOW_NOISE", "SNV"]:
-        rand.seed(904081199)
-        np.random.seed(904081199)
+        # rand.seed(904081199)
+        # np.random.seed(904081199)
         strategylearner = StrategyLearner(impact=impact, commission=commission, verbose=False)
         st = time.time()
         strategylearner.add_evidence(symbol=symbol, sd=in_sample_sd, ed=in_sample_ed, sv=sv)
