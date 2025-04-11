@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import datetime as dt
-
 import TheoreticallyOptimalStrategy as TOS
 from marketsimcode import compute_portvals, compute_stats
 import indicators
@@ -110,4 +109,59 @@ class ManualStrategy(object):
             print("Manual Trade File\n", manual_trades)
 
         return manual_trades
+
+    def run(self, symbol, is_sd, is_ed, os_sd, os_ed, sv):
+        is_trades = self.testPolicy(symbol=symbol, sd=is_sd, ed=is_ed, sv=sv)
+        os_trades = self.testPolicy(symbol=symbol, sd=os_sd, ed=os_ed, sv=sv)
+        b_trades = pd.DataFrame(0, index=is_trades.index, columns=[symbol])
+        os_b_trades = pd.DataFrame(0, index=os_trades.index, columns=[symbol])
+        b_trades.iloc[0] = 1000
+        os_b_trades.iloc[0] = 1000
+
+        is_pv = compute_portvals(is_trades, commission=self.commission, impact=self.impact, start_val=sv)
+        os_pv = compute_portvals(os_trades, commission=self.commission, impact=self.impact, start_val=sv)
+        b_pv = compute_portvals(b_trades, commission=self.commission, impact=self.impact, start_val=sv)
+        os_b_pv = compute_portvals(os_b_trades, commission=self.commission, impact=self.impact, start_val=sv)
+
+        is_pv_norm = is_pv/is_pv.iloc[0]
+        os_pv_norm = os_pv/os_pv.iloc[0]
+        b_pv_norm = b_pv/b_pv.iloc[0]
+        os_b_pv_norm = os_b_pv / os_b_pv.iloc[0]
+
+        is_long_dates = is_trades.loc[is_trades[symbol] >= 1000].index
+        is_short_dates = is_trades.loc[is_trades[symbol] <= -1000].index
+
+        os_long_dates = os_trades.loc[os_trades[symbol] >= 1000].index
+        os_short_dates = os_trades.loc[os_trades[symbol] <= -1000].index
+
+        fig, (insample, outsample) = plt.subplots(figsize=(12, 12), ncols = 1, nrows = 2)
+        insample.plot(is_pv_norm, color='purple', label='Manual Strategy')
+        insample.plot(b_pv_norm, color='red', label='Benchmark')
+
+        for date in is_long_dates:
+            insample.axvline(date, color='blue', linestyle='--')
+
+        for date in is_short_dates:
+            insample.axvline(date, color='black', linestyle='--')
+
+        insample.legend()
+        insample.grid()
+        insample.set(xlabel="Date", ylabel="Normalised Portfolio Value", title="In-Sample Manual Strategy")
+
+        outsample.plot(os_pv_norm, color='purple', label='Manual Strategy')
+        outsample.plot(os_b_pv_norm, color='red', label='Benchmark')
+
+        for date in os_long_dates:
+            outsample.axvline(date, color='blue', linestyle='--')
+
+        for date in os_short_dates:
+            outsample.axvline(date, color='black', linestyle='--')
+
+        outsample.legend()
+        outsample.grid()
+        outsample.set(xlabel="Date", ylabel="Normalised Portfolio Value", title="Out-Sample Manual Strategy")
+
+        plt.savefig("images/manual_strategy.png")
+
+        return is_pv, os_pv, b_pv, os_b_pv
 
