@@ -1,0 +1,27 @@
+Manual Strategy Stats:
+In-sample:
+Cum Ret: 0.46651250000000033
+Avg Daily Ret: 0.0008475481490829904
+Std Dev of Daily Ret: 0.013383850953290612
+Sharpe Ratio: 1.0052719360605382
+
+Out-sample: 
+Cum Ret: 0.12344300000000086
+Avg Daily Ret: 0.00026066868511829747
+Std Dev of Daily Ret: 0.007720292661427542
+Sharpe Ratio: 0.5359883716721906
+
+
+Experiment 1 <> Strategy Learner Stats:
+In-sample:
+Cum Ret: 0.5642835456127806
+Avg Daily Ret: 0.0009607703669288904
+Std Dev of Daily Ret: 0.012227038184767941
+Sharpe Ratio: 1.2473794975634307
+Out-sample: 
+Cum Ret: -0.21637599999999424
+Avg Daily Ret: -0.0004295129012812767
+Std Dev of Daily Ret: 0.010419005116894482
+Sharpe Ratio: -0.6544104598862935
+
+

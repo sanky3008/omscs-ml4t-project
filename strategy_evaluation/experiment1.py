@@ -58,14 +58,14 @@ def run(
     insample.plot(s_is_pv, color = "orange", label = "Strategy Learner")
     insample.grid()
     insample.legend()
-    insample.set(xlabel='Date', ylabel='Normalised Value', title='In-Sample Portfolio Values')
+    insample.set(xlabel='Date', ylabel='Normalised Value', title='JPM In-Sample Portfolio Values')
 
     outsample.plot(os_b_pv, color="purple", label="Benchmark")
     outsample.plot(m_os_pv, color="red", label="Manual Strategy")
     outsample.plot(s_os_pv, color="orange", label="Strategy Learner")
     outsample.grid()
     outsample.legend()
-    outsample.set(xlabel='Date', ylabel='Normalised Value', title='Out-Sample Portfolio Values')
+    outsample.set(xlabel='Date', ylabel='Normalised Value', title='JPM Out-Sample Portfolio Values')
 
     fig.savefig("images/experiment1.png")
     plt.close()

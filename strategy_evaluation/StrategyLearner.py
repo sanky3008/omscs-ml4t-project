@@ -118,7 +118,7 @@ class StrategyLearner(object):
 
         costs = 0
         if action != 0:
-            costs = self.impact + self.commission/price.loc[date]
+            costs = self.impact + self.commission/yesterday_price.loc[date] # Prev this was commission/price.loc[date]
 
         reward = holdings*(price.loc[date]/yesterday_price.loc[date] - 1) - costs
 
