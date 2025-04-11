@@ -63,10 +63,10 @@ class StrategyLearner(object):
         self.learner = ql.QLearner(
             num_states=27,
             num_actions=3, # 0 -> do nothing, 1 -> buy, 2 -> sell
-            alpha=0.02,
+            alpha=0.01,
             gamma=0.99,
-            rar=0.9, #prev: 0.5
-            radr=0.99, #prev: 0.999
+            rar=0.5,
+            radr=0.99,
             dyna=0,
             verbose=False,
         )
@@ -85,9 +85,9 @@ class StrategyLearner(object):
             dbbp = 2
 
         drsi = 1
-        if rsi <= 40:
+        if rsi <= 30: #prev: 40
             drsi = 0
-        elif rsi >= 60:
+        elif rsi >= 70: #prev: 60
             drsi = 2
 
         dppo = 0
@@ -198,7 +198,7 @@ class StrategyLearner(object):
                 print("\nrar: ", self.learner.rar)
                 print("\n")
 
-            if len(scores) >= 5 and (abs(scores[-2]/scores[-1] - 1) <= 0.000001) and (abs(scores[-3]/scores[-2] - 1) <= 0.000001):
+            if len(scores) >= 3 and (abs(scores[-2]/scores[-1] - 1) <= 0.000001) and (abs(scores[-3]/scores[-2] - 1) <= 0.000001):
                 self.add_evidence_trades = trades
                 break
 

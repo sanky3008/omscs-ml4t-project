@@ -135,8 +135,8 @@ class ManualStrategy(object):
         os_short_dates = os_trades.loc[os_trades[symbol] <= -1000].index
 
         fig, (insample, outsample) = plt.subplots(figsize=(12, 12), ncols = 1, nrows = 2)
-        insample.plot(is_pv_norm, color='purple', label='Manual Strategy')
-        insample.plot(b_pv_norm, color='red', label='Benchmark')
+        insample.plot(is_pv_norm, color='red', label='Manual Strategy')
+        insample.plot(b_pv_norm, color='purple', label='Benchmark')
 
         for date in is_long_dates:
             insample.axvline(date, color='blue', linestyle='--')
@@ -148,8 +148,8 @@ class ManualStrategy(object):
         insample.grid()
         insample.set(xlabel="Date", ylabel="Normalised Portfolio Value", title="In-Sample Manual Strategy")
 
-        outsample.plot(os_pv_norm, color='purple', label='Manual Strategy')
-        outsample.plot(os_b_pv_norm, color='red', label='Benchmark')
+        outsample.plot(os_pv_norm, color='red', label='Manual Strategy')
+        outsample.plot(os_b_pv_norm, color='purple', label='Benchmark')
 
         for date in os_long_dates:
             outsample.axvline(date, color='blue', linestyle='--')
@@ -161,7 +161,8 @@ class ManualStrategy(object):
         outsample.grid()
         outsample.set(xlabel="Date", ylabel="Normalised Portfolio Value", title="Out-Sample Manual Strategy")
 
-        plt.savefig("images/manual_strategy.png")
+        fig.savefig("images/manual_strategy.png")
+        plt.close()
 
         return is_pv, os_pv, b_pv, os_b_pv
 
