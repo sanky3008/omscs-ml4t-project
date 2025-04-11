@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     # Run Manual Strategy
     manualstrategy = ManualStrategy(verbose=False, commission=commission, impact=impact)
-    is_pv, os_pv, b_pv, os_b_pv = manualstrategy.run(symbol, is_sd=in_sample_sd, is_ed=in_sample_ed, os_sd=out_sample_sd, os_ed=out_sample_ed, sv=sv)
+    m_is_pv, m_os_pv, m_is_b_pv, m_os_b_pv = manualstrategy.run(symbol, is_sd=in_sample_sd, is_ed=in_sample_ed, os_sd=out_sample_sd, os_ed=out_sample_ed, sv=sv)
 
 
 
