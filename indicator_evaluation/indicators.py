@@ -4,18 +4,18 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import datetime as dt
 
-def author():
-    return "sphadnis9"
-
-def study_group():
-    return "sphadnis9"
-
 class Indicators:
     def __init__(self, symbol, date_range):
         self.prices_master = get_data([symbol], pd.date_range(date_range[0]-dt.timedelta(90), date_range[-1]+dt.timedelta(90)))
         self.market_days = self.prices_master.index
         self.date_range = self.__build_date_range(date_range)
         self.symbol = symbol
+
+    def author():
+        return "sphadnis9"
+
+    def study_group():
+        return "sphadnis9"
 
     def __build_date_range(self, date_range):
         sd = date_range[0]

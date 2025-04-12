@@ -33,7 +33,6 @@ import datetime as dt
 import util as ut
 import QLearner as ql
 
-import TheoreticallyOptimalStrategy as TOS
 from marketsimcode import compute_portvals, compute_stats
 import indicators
 from util import get_data
@@ -72,6 +71,12 @@ class StrategyLearner(object):
         )
         self.statespace = np.zeros(27)
         self.add_evidence_trades = 0
+
+    def author():
+        return "sphadnis9"
+
+    def study_group():
+        return "sphadnis9"
 
     # this method gives a single state for given indicators
     def discretize(self, bbp, rsi, ppo):
