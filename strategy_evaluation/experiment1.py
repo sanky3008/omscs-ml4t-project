@@ -52,7 +52,7 @@ def run(
     s_is_pv = normalise(s_is_pv)
     s_os_pv = normalise(s_os_pv)
 
-    fig, (insample, outsample) = plt.subplots(nrows=2, ncols=1, figsize=(12, 12))
+    fig, (insample, outsample) = plt.subplots(nrows=1, ncols=2, figsize=(18, 8))
     insample.plot(is_b_pv, color = "purple", label="Benchmark")
     insample.plot(m_is_pv, color = "red", label="Manual Strategy")
     insample.plot(s_is_pv, color = "orange", label = "Strategy Learner")
@@ -67,7 +67,8 @@ def run(
     outsample.legend()
     outsample.set(xlabel='Date', ylabel='Normalised Value', title='JPM Out-Sample Portfolio Values')
 
+    fig.tight_layout()
     fig.savefig("images/experiment1.png")
     plt.close()
 
-    return s_is_pv, s_os_pv
+    return s_is_trades, s_is_pv, s_os_pv

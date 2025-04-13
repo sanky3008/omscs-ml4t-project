@@ -62,29 +62,13 @@ class ManualStrategy(object):
         indicator = indicators.Indicators(symbol, pd.date_range(sd, ed))
         bbp = indicator.get_bbp(window = 20)
         rsi = indicator.get_rsi(window = 14)
-        macd = indicator.get_macd().loc[sd:] # My version of indicators.py is also returning values 9 market days prior to sd
         ppo = indicator.get_ppo()
-
-        # Calculate MACD crossover
-        macd_prev = macd.shift(1)
-        macd_prev.iloc[0] = macd_prev.iloc[1]
-        conditions = [
-            (macd_prev <= 0) & (macd > 0),
-            (macd_prev >= 0) & (macd < 0)
-        ]
-        values = [1, -1]
-        # Documentation: https://numpy.org/doc/2.1/reference/generated/numpy.select.html
-        macd_crossover = pd.DataFrame({'result': np.select(conditions, values, default=0)}, index=macd.index, columns=["result"])
 
         # Generate signals
         signals_cond = [
-            ((bbp <= 0) & (rsi <= 30)) | ((bbp <= 0) & (macd_crossover["result"] == 1)) | ((rsi <= 30) & (macd_crossover["result"] == 1)),
-            ((bbp >= 100) & (rsi >= 70)) | ((bbp >= 100) & (macd_crossover["result"] == 1)) | ((rsi >= 70) & (macd_crossover["result"] == 1))
+            ((bbp <= 0) & (rsi <= 30)) | ((bbp <= 0) & (ppo > 1)) | ((rsi <= 30) & (ppo > 1)),
+            ((bbp >= 100) & (rsi >= 70)) | ((bbp >= 100) & (ppo < -1)) | ((rsi >= 70) & (ppo < -1))
         ]
-        # signals_cond = [
-        #     ((bbp <= 0) & (rsi <= 30)) | ((bbp <= 0) & (ppo > 3)) | ((rsi <= 30) & (ppo > 3)),
-        #     ((bbp >= 100) & (rsi >= 70)) | ((bbp >= 100) & (ppo < 3)) | ((rsi >= 70) & (ppo < 3))
-        # ]
         signal_values = [1, -1]
         signals = pd.DataFrame({'result': np.select(signals_cond, signal_values, default=0)}, index=bbp.index)
 
@@ -134,15 +118,25 @@ class ManualStrategy(object):
         os_long_dates = os_trades.loc[os_trades[symbol] >= 1000].index
         os_short_dates = os_trades.loc[os_trades[symbol] <= -1000].index
 
-        fig, (insample, outsample) = plt.subplots(figsize=(12, 12), ncols = 1, nrows = 2)
+        fig, (insample, outsample) = plt.subplots(figsize=(18, 8), ncols = 2, nrows = 1)
         insample.plot(is_pv_norm, color='red', label='Manual Strategy')
         insample.plot(b_pv_norm, color='purple', label='Benchmark')
 
+        i = 0
         for date in is_long_dates:
-            insample.axvline(date, color='blue', linestyle='--')
+            if i == 0:
+                insample.axvline(date, color='blue', linestyle='--', label='Long')
+                i = 1
+            else:
+                insample.axvline(date, color='blue', linestyle='--')
 
+        i = 0
         for date in is_short_dates:
-            insample.axvline(date, color='black', linestyle='--')
+            if i == 0:
+                insample.axvline(date, color='black', linestyle='--', label='Short')
+                i = 1
+            else:
+                insample.axvline(date, color='black', linestyle='--')
 
         insample.legend()
         insample.grid()
@@ -151,16 +145,27 @@ class ManualStrategy(object):
         outsample.plot(os_pv_norm, color='red', label='Manual Strategy')
         outsample.plot(os_b_pv_norm, color='purple', label='Benchmark')
 
+        i = 0
         for date in os_long_dates:
-            outsample.axvline(date, color='blue', linestyle='--')
+            if i == 0:
+                outsample.axvline(date, color='blue', linestyle='--', label='Long')
+                i = 1
+            else:
+                outsample.axvline(date, color='blue', linestyle='--')
 
+        i = 0
         for date in os_short_dates:
-            outsample.axvline(date, color='black', linestyle='--')
+            if i == 0:
+                outsample.axvline(date, color='black', linestyle='--', label='Short')
+                i = 1
+            else:
+                outsample.axvline(date, color='black', linestyle='--')
 
         outsample.legend()
         outsample.grid()
         outsample.set(xlabel="Date", ylabel="Normalised Portfolio Value", title="Out-Sample Manual Strategy")
 
+        fig.tight_layout()
         fig.savefig("images/manual_strategy.png")
         plt.close()
 

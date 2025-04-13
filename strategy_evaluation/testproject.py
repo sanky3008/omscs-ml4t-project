@@ -20,7 +20,6 @@ def study_group():
     return "sphadnis9"
 
 if __name__ == "__main__":
-    st = time.time()
     rand.seed(904081199)
     np.random.seed(904081199)
     results = open("p8_results.txt", "w")
@@ -39,7 +38,23 @@ if __name__ == "__main__":
     ms_results = manualstrategy.run(symbol, is_sd=is_sd, is_ed=is_ed, os_sd=os_sd, os_ed=os_ed, sv=sv)
     m_is_pv, m_os_pv, is_b_pv, os_b_pv = ms_results
 
-    results.write("Manual Strategy Stats:")
+    results.write("Benchmark Stats:")
+    results.write("\nIn-sample:")
+    stats = compute_stats(is_b_pv)
+    results.write(f"\nCum Ret: {stats[0]}")
+    results.write(f"\nAvg Daily Ret: {stats[1]}")
+    results.write(f"\nStd Dev of Daily Ret: {stats[2]}")
+    results.write(f"\nSharpe Ratio: {stats[3]}")
+
+    results.write("\n")
+    results.write("\nOut-sample: ")
+    stats = compute_stats(os_b_pv)
+    results.write(f"\nCum Ret: {stats[0]}")
+    results.write(f"\nAvg Daily Ret: {stats[1]}")
+    results.write(f"\nStd Dev of Daily Ret: {stats[2]}")
+    results.write(f"\nSharpe Ratio: {stats[3]}")
+
+    results.write("\n\nManual Strategy Stats:")
     results.write("\nIn-sample:")
     stats = compute_stats(m_is_pv)
     results.write(f"\nCum Ret: {stats[0]}")
@@ -58,7 +73,7 @@ if __name__ == "__main__":
     results.write("\n\n\n")
 
     # Run Experiment 1
-    s_is_pv, s_os_pv = experiment1.run(
+    s_is_trades, s_is_pv, s_os_pv = experiment1.run(
         symbol=symbol,
         is_sd=is_sd,
         is_ed=is_ed,
@@ -92,14 +107,15 @@ if __name__ == "__main__":
     # 1: impact = 0
     # 2: impact = 0.005
     # 3: impact = 0.01
+    results.write("\nExperiment 2 <> Impact v/s Returns:")
     pv1, pv2, pv3 = experiment2.run(
         symbol=symbol,
         is_sd = is_sd,
         is_ed = is_ed,
-        sv=sv
+        sv=sv,
+        s_is_trades=s_is_trades,
+        results=results
     )
-
-    results.write("\nExperiment 2 <> Impact v/s Returns:")
     results.write("\nImpact = 0: ")
     stats = compute_stats(pv1)
     results.write(f"\nCum Ret: {stats[0]}")
@@ -126,9 +142,6 @@ if __name__ == "__main__":
     results.write("\n\n\n")
 
     results.close()
-
-    et = time.time()
-    print(et-st)
 
     # ROUGH
 

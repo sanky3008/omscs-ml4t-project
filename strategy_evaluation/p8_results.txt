@@ -1,9 +1,22 @@
+Benchmark Stats:
+In-sample:
+Cum Ret: 0.01232493334014717
+Avg Daily Ret: 0.0001684249855876962
+Std Dev of Daily Ret: 0.01702433433117295
+Sharpe Ratio: 0.15704953313284
+
+Out-sample: 
+Cum Ret: -0.08357911003280027
+Avg Daily Ret: -0.00013715655334474222
+Std Dev of Daily Ret: 0.008491706863560227
+Sharpe Ratio: -0.25640225457392474
+
 Manual Strategy Stats:
 In-sample:
-Cum Ret: 0.46651250000000033
-Avg Daily Ret: 0.0008475481490829904
-Std Dev of Daily Ret: 0.013383850953290612
-Sharpe Ratio: 1.0052719360605382
+Cum Ret: 0.49339250000000034
+Avg Daily Ret: 0.0009023636801227652
+Std Dev of Daily Ret: 0.01473705849458871
+Sharpe Ratio: 0.9720107539581988
 
 Out-sample: 
 Cum Ret: 0.12344300000000086
@@ -23,5 +36,32 @@ Cum Ret: -0.21637599999999424
 Avg Daily Ret: -0.0004295129012812767
 Std Dev of Daily Ret: 0.010419005116894482
 Sharpe Ratio: -0.6544104598862935
+
+
+
+Experiment 2 <> Impact v/s Returns:
+Trades Placed
+Benchmark (Commission = 9.95, Impact = 0.005): 91
+Impact = 0, Commission = 0: 139
+Impact = 0.005, Commission = 0: 138
+Impact = 0.01, Commission = 0: 140
+
+Impact = 0: 
+Cum Ret: 0.6405000000000001
+Avg Daily Ret: 0.0010543810182871637
+Std Dev of Daily Ret: 0.012178259672588657
+Sharpe Ratio: 1.3743983310393186
+
+Impact = 0.005: 
+Cum Ret: 0.19172350000000438
+Avg Daily Ret: 0.00044018100646838094
+Std Dev of Daily Ret: 0.013659460537256448
+Sharpe Ratio: 0.5115616997287505
+
+Impact = 0.01: 
+Cum Ret: -0.2714884159361086
+Avg Daily Ret: -0.00048149763470732457
+Std Dev of Daily Ret: 0.017104148961197333
+Sharpe Ratio: -0.4468820990245488
 
 

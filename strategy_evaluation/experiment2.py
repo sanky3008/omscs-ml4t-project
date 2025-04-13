@@ -10,6 +10,7 @@ from ManualStrategy import ManualStrategy
 from StrategyLearner import StrategyLearner
 import random as rand
 import time
+from util import get_data
 
 
 def author():
@@ -22,7 +23,9 @@ def run(
     symbol,
     is_sd,
     is_ed,
-    sv
+    sv,
+    s_is_trades,
+    results
 ):
     commission = 0
     learner_1 = StrategyLearner(verbose=False, impact=0, commission=commission)
@@ -45,14 +48,22 @@ def run(
     npv2 = pv2 / pv2.iloc[0]
     npv3 = pv3 / pv3.iloc[0]
 
-    fig, (ax1, ax2, ax3, ax4) = plt.subplots(nrows=4, ncols=1, figsize=(12,20), gridspec_kw={'height_ratios': [2, 1, 1, 1]})
+    fig, (ax1) = plt.subplots(nrows=1, ncols=1, figsize=(12,8))
     ax1.plot(npv1, label='Impact = 0')
     ax1.plot(npv2, label='Impact = 0.005')
     ax1.plot(npv3, label='Impact = 0.01')
     ax1.legend()
     ax1.grid()
     ax1.set(xlabel='Date', ylabel='Normalised Portfolio Value', title='JPM Strategy Learner with various Impacts')
+
     fig.savefig("images/experiment2.png")
     plt.close()
+
+    results.write("\nTrades Placed")
+    results.write(f"\nBenchmark (Commission = 9.95, Impact = 0.005): {s_is_trades[s_is_trades.iloc[:, 0] != 0].shape[0]}")
+    results.write(f"\nImpact = 0, Commission = 0: {trades_1[trades_1.iloc[:, 0] != 0].shape[0]}")
+    results.write(f"\nImpact = 0.005, Commission = 0: {trades_2[trades_2.iloc[:, 0] != 0].shape[0]}")
+    results.write(f"\nImpact = 0.01, Commission = 0: {trades_3[trades_3.iloc[:, 0] != 0].shape[0]}")
+    results.write("\n")
 
     return pv1, pv2, pv3
